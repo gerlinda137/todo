@@ -1,0 +1,46 @@
+*,
+*::before,
+*:after {
+  box-sizing: border-box;
+}
+
+.header {
+}
+.page-container {
+}
+.header__new-task {
+}
+.fa-solid {
+}
+.fa-plus {
+}
+.header__title {
+}
+.user-menu {
+}
+.user-manu__username {
+}
+.user-menu__logout {
+}
+.fa-arrow-right-from-bracket {
+}
+.board {
+}
+.board__title {
+}
+.kanban {
+}
+.column {
+}
+.column___titile {
+}
+.column-list {
+}
+.column-list__item {
+}
+.task {
+}
+.task__title {
+}
+.task__description {
+}

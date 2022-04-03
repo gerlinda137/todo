@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/bed372d092.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>todo</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="page-container">
+        <button class="header__new-task" type="button">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <h1 class="header__title">Your kanban</h1>
+        <div class="user-menu">
+          <h2 class="user-manu__username">User</h2>
+          <button class="user-menu__logout" type="button">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="board">
+        <h2 class="board__title">Project name</h2>
+
+        <section class="kanban">
+          <div class="column">
+            <h3 class="column___titile">to do</h3>
+            <ul class="column-list">
+              <li class="column-list__item">
+                <article class="task">
+                  <h4 class="task__title">Покормить кота</h4>
+                  <p class="task__description">Помыть миску и насыпать корма</p>
+                </article>
+              </li>
+            </ul>
+          </div>
+          <div class="column">
+            <h3 class="column___titile">in progress</h3>
+            <ul class="column-list">
+              <li class="column-list__item">
+                <article class="task">
+                  <h4 class="task__title">Покормить кота</h4>
+                  <p class="task__description">Помыть миску и насыпать корма</p>
+                </article>
+              </li>
+            </ul>
+          </div>
+          <div class="column">
+            <h3 class="column___titile">done</h3>
+            <ul class="column-list">
+              <li class="column-list__item">
+                <article class="task">
+                  <h4 class="task__title">Покормить кота</h4>
+                  <p class="task__description">Помыть миску и насыпать корма</p>
+                </article>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
