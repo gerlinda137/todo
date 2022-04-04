@@ -1,6 +1,8 @@
 :root {
   --light-bg: rgb(245, 241, 241);
   --light-card-bg: #fdfbfb;
+  --light-border: grey;
+  --light-txt: rgb(26, 24, 24);
 }
 
 *,
@@ -33,7 +35,9 @@ body {
   height: 100vh;
   margin: 0;
   font-family: "IBM Plex Sans", sans-serif;
+  color: var(--light-txt);
   background-color: var(--light-bg);
+  position: relative;
 }
 
 .header {
@@ -93,7 +97,7 @@ body {
 }
 
 .user-menu__logout:hover {
-  color: #000;
+  color: var(--light-txt);
 }
 
 .main {
@@ -190,4 +194,113 @@ body {
 
 .hovered {
   background-color: rgb(255, 99, 71, 0.1);
+}
+
+/*popup*/
+
+.popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  left: 0;
+  top: 0;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup__content {
+  background-color: var(--light-card-bg);
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  box-shadow: 4px 4px 8px 0px rgb(255, 99, 71, 0.2);
+  z-index: 11;
+  top: 20vh;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 2em;
+  border-radius: 10px;
+  border-bottom: 2px solid tomato;
+}
+
+.popup__close-btn {
+  position: absolute;
+  color: var(--light-txt);
+  right: 1em;
+  top: 1em;
+  font-size: 1.2em;
+  transition: color 0.5s;
+}
+
+.popup__close-btn:hover {
+  color: tomato;
+}
+
+.add-task-popup {
+}
+
+.add-task-popup__title {
+  margin-bottom: 1em;
+}
+.add-task-popup__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.input {
+  margin-bottom: 1em;
+  border-radius: 5px;
+  padding: 0.5em;
+  width: 100%;
+  border: 2px solid var(--light-border);
+  outline: tomato;
+  font-family: "IBM Plex Sans", sans-serif;
+  transition: border 0.5s;
+}
+
+.input:active,
+.input:focus {
+  border-color: tomato;
+}
+
+.input::-webkit-input-placeholder {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.input::-moz-placeholder {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.input:-ms-input-placeholder {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.input::-ms-input-placeholder {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.input::placeholder {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.add-task-popup__submit {
+  background-color: tomato;
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.5em 1em;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  transition: opacity 0.5s;
+}
+
+.add-task-popup__submit:hover {
+  opacity: 0.5;
 }

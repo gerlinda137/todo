@@ -1,5 +1,8 @@
 const tasks = document.querySelectorAll(".column-list__item");
 const columns = document.querySelectorAll(".column-list");
+const addTaskBtn = document.querySelector(".header__new-task");
+const closeTaskPopup = document.querySelector(".popup__close-btn");
+const newTaskPopup = document.querySelector(".add-task-popup");
 let currentDraggedTask = null;
 
 for (const task of tasks) {
@@ -46,3 +49,21 @@ function dropDrag() {
   //   console.log(event);
   this.classList.remove("hovered");
 }
+
+//popup
+
+addTaskBtn.addEventListener("click", () => {
+  newTaskPopup.classList.remove("hidden");
+});
+
+closeTaskPopup.addEventListener("click", () => {
+  newTaskPopup.classList.add("hidden");
+});
+
+newTaskPopup.addEventListener("click", (event) => {
+  const popupContent = document.querySelector(".popup__content");
+  console.log(event.target);
+  if (event.target !== popupContent && !popupContent.contains(event.target)) {
+    newTaskPopup.classList.add("hidden");
+  }
+});

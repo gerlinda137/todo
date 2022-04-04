@@ -68,6 +68,32 @@
         </section>
       </section>
     </main>
+    <div class="add-task-popup popup hidden">
+      <div class="popup__content">
+        <button class="popup__close-btn" type="button">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 class="add-task-popup__title">Add new task</h2>
+        <form class="add-task-popup__form" method="post">
+          <label for="add-task-title">
+            <input
+              class="input"
+              id="add-task-title"
+              placeholder="Name your task"
+              type="text"
+            />
+          </label>
+          <label for="add-task-description">
+            <textarea
+              class="input"
+              id="add-task-description"
+              placeholder="Add task description"
+            ></textarea>
+          </label>
+          <button class="add-task-popup__submit" type="submit">Add task</button>
+        </form>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
