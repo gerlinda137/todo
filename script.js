@@ -1,14 +1,17 @@
-const tasks = document.querySelectorAll(".column-list__item");
+// const tasks = document.querySelectorAll(".column-list__item");
 const columns = document.querySelectorAll(".column-list");
 const addTaskBtn = document.querySelector(".header__new-task");
 const closeTaskPopup = document.querySelector(".popup__close-btn");
 const newTaskPopup = document.querySelector(".add-task-popup");
+const submitTaskBtn = document.getElementById("submitTask");
+const taskTitleInput = document.getElementById("add-task-title");
+const taskDescriptionInput = document.getElementById("add-task-description");
 let currentDraggedTask = null;
 
-for (const task of tasks) {
-  task.addEventListener("dragstart", startDrag);
-  task.addEventListener("dragend", endDrag);
-}
+// for (const task of tasks) {
+//   task.addEventListener("dragstart", startDrag);
+//   task.addEventListener("dragend", endDrag);
+// }
 
 for (const column of columns) {
   column.addEventListener("dragenter", enterDrag);
@@ -41,12 +44,11 @@ function enterDrag() {
 
 function leaveDrag() {
   this.classList.remove("hovered");
-  console.log("leavedrag");
 }
 
 function dropDrag() {
+  console.log(currentDraggedTask);
   this.appendChild(currentDraggedTask);
-  //   console.log(event);
   this.classList.remove("hovered");
 }
 
@@ -54,6 +56,7 @@ function dropDrag() {
 
 addTaskBtn.addEventListener("click", () => {
   newTaskPopup.classList.remove("hidden");
+  taskTitleInput.focus();
 });
 
 closeTaskPopup.addEventListener("click", () => {
@@ -62,8 +65,36 @@ closeTaskPopup.addEventListener("click", () => {
 
 newTaskPopup.addEventListener("click", (event) => {
   const popupContent = document.querySelector(".popup__content");
-  console.log(event.target);
   if (event.target !== popupContent && !popupContent.contains(event.target)) {
     newTaskPopup.classList.add("hidden");
   }
 });
+
+//addTask
+
+submitTaskBtn.addEventListener("click", kek);
+
+function kek(event) {
+  event.preventDefault();
+  newTaskPopup.classList.add("hidden");
+
+  let newTaskTitle = taskTitleInput.value;
+  let newTaskDescription = taskDescriptionInput.value;
+
+  const taskTemplate = document.getElementById("taskTemplate");
+  const taskTemplateClone =
+    taskTemplate.content.firstElementChild.cloneNode(true);
+  const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
+  const clonedTaskDescription =
+    taskTemplateClone.querySelector(".task__description");
+
+  clonedTaskTitle.textContent = newTaskTitle;
+  clonedTaskDescription.textContent = newTaskDescription;
+
+  columns[0].prepend(taskTemplateClone);
+  taskTemplateClone.addEventListener("dragstart", startDrag);
+  taskTemplateClone.addEventListener("dragend", endDrag);
+
+  taskTitleInput.value = "";
+  taskDescriptionInput.value = "";
+}
