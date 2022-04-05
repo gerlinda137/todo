@@ -3,6 +3,7 @@
   --light-card-bg: #fdfbfb;
   --light-border: grey;
   --light-txt: rgb(26, 24, 24);
+  --light-control-btns: rgba(128, 128, 128, 0.5);
 }
 
 *,
@@ -156,9 +157,10 @@ body {
 .task {
   display: flex;
   flex-direction: column;
+  position: relative;
   border-radius: 10px;
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-  padding: 1em;
+  padding: 1.5em 1em;
   transition: all 0.5s;
   cursor: pointer;
   background-color: var(--light-card-bg);
@@ -173,6 +175,39 @@ body {
 
 .task:hover {
   box-shadow: 4px 4px 8px 0px rgb(255, 99, 71, 0.2);
+}
+
+.task:hover .task__controls {
+  opacity: 1;
+}
+
+.task__controls {
+  display: flex;
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.task__btn {
+  font-size: 0.75em;
+  color: var(--light-control-btns);
+  transition: color 0.5s;
+}
+
+.task__btn:hover {
+  color: tomato;
+}
+
+.task__btn--edit {
+}
+.fa-solid {
+}
+.fa-pen {
+}
+.task__btn--delete {
+}
+.fa-trash-can {
 }
 
 .task__title {

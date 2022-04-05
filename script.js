@@ -87,6 +87,7 @@ function kek(event) {
   const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
   const clonedTaskDescription =
     taskTemplateClone.querySelector(".task__description");
+  const deleteTaskBtn = taskTemplateClone.querySelector("#delete-task-btn");
 
   clonedTaskTitle.textContent = newTaskTitle;
   clonedTaskDescription.textContent = newTaskDescription;
@@ -94,7 +95,14 @@ function kek(event) {
   columns[0].prepend(taskTemplateClone);
   taskTemplateClone.addEventListener("dragstart", startDrag);
   taskTemplateClone.addEventListener("dragend", endDrag);
+  deleteTaskBtn.addEventListener("click", deleteTask);
+
+  function deleteTask() {
+    taskTemplateClone.remove();
+  }
 
   taskTitleInput.value = "";
   taskDescriptionInput.value = "";
 }
+
+//delete task
