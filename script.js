@@ -52,7 +52,7 @@ function dropDrag() {
   this.classList.remove("hovered");
 }
 
-//popup
+//popup new task
 
 addTaskBtn.addEventListener("click", () => {
   newTaskPopup.classList.remove("hidden");
@@ -63,12 +63,30 @@ closeTaskPopup.addEventListener("click", () => {
   newTaskPopup.classList.add("hidden");
 });
 
-newTaskPopup.addEventListener("click", (event) => {
-  const popupContent = document.querySelector(".popup__content");
+function popupTryCloseByClickOutOfContent(event) {
+  const popupContent = this.querySelector(".popup__content");
   if (event.target !== popupContent && !popupContent.contains(event.target)) {
-    newTaskPopup.classList.add("hidden");
+    this.classList.add("hidden");
   }
+}
+
+newTaskPopup.addEventListener("click", popupTryCloseByClickOutOfContent);
+
+//popup edit task
+
+const editTaskPopup = document.querySelector(".edit-task-popup");
+const editTitleInput = editTaskPopup.querySelector("#edit-task-title");
+const editDescriptionInput = editTaskPopup.querySelector(
+  "#edit-task-description"
+);
+const closeEditTaskPopup = editTaskPopup.querySelector(".popup__close-btn");
+const submitEditedTask = editTaskPopup.querySelector("#submitEditedTask");
+
+closeEditTaskPopup.addEventListener("click", () => {
+  editTaskPopup.classList.add("hidden");
 });
+
+editTaskPopup.addEventListener("click", popupTryCloseByClickOutOfContent);
 
 //addTask
 
@@ -88,6 +106,7 @@ function kek(event) {
   const clonedTaskDescription =
     taskTemplateClone.querySelector(".task__description");
   const deleteTaskBtn = taskTemplateClone.querySelector("#delete-task-btn");
+  const editTaskBtn = taskTemplateClone.querySelector("#edit-task-btn");
 
   clonedTaskTitle.textContent = newTaskTitle;
   clonedTaskDescription.textContent = newTaskDescription;
@@ -95,14 +114,37 @@ function kek(event) {
   columns[0].prepend(taskTemplateClone);
   taskTemplateClone.addEventListener("dragstart", startDrag);
   taskTemplateClone.addEventListener("dragend", endDrag);
-  deleteTaskBtn.addEventListener("click", deleteTask);
-
-  function deleteTask() {
-    taskTemplateClone.remove();
-  }
+  deleteTaskBtn.addEventListener("click", removeTask);
+  editTaskBtn.addEventListener("click", editTask);
 
   taskTitleInput.value = "";
   taskDescriptionInput.value = "";
+
+  function removeTask() {
+    taskTemplateClone.remove();
+  }
 }
 
-//delete task
+function createTask(title, description, column, template) {
+  const taskTemplateClone = template.content.firstElementChild.cloneNode(true);
+  const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
+  const clonedTaskDescription =
+    taskTemplateClone.querySelector(".task__description");
+  clonedTaskTitle.textContent = title;
+  clonedTaskDescription.textContent = description;
+  column.prepend(taskTemplateClone);
+  taskTemplateClone.addEventListener("dragstart", startDrag);
+  taskTemplateClone.addEventListener("dragend", endDrag);
+}
+
+function editTask() {
+  editTaskPopup.classList.remove("hidden");
+  editTitleInput.focus();
+  editTitleInput.value = newTaskTitle;
+  editDescriptionInput.value = newTaskDescription;
+  submitEditedTask.addEventListener("click", (event) => {
+    event.preventDefault();
+    clonedTaskTitle.textContent = editTitleInput.value;
+    clonedTaskDescription.textContent = editDescriptionInput.value;
+  });
+}

@@ -115,8 +115,8 @@
         <button class="popup__close-btn" type="button">
           <i class="fa-solid fa-xmark"></i>
         </button>
-        <h2 class="add-task-popup__title">Add new task</h2>
-        <form class="add-task-popup__form" method="post">
+        <h2 class="popup__title">Add new task</h2>
+        <form class="popup__form" method="post">
           <label for="add-task-title">
             <input
               class="input"
@@ -132,7 +132,35 @@
               placeholder="Add task description"
             ></textarea>
           </label>
-          <button class="add-task-popup__submit" type="submit" id="submitTask">
+          <button class="popup__submit" type="submit" id="submitTask">
+            Add task
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="edit-task-popup popup hidden">
+      <div class="popup__content">
+        <button class="popup__close-btn" type="button">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 class="popup__title">Edit your task</h2>
+        <form class="popup__form" method="post">
+          <label for="edit-task-title">
+            <input
+              class="input"
+              id="edit-task-title"
+              placeholder="Rename your task"
+              type="text"
+            />
+          </label>
+          <label for="edit-task-description">
+            <textarea
+              class="input"
+              id="edit-task-description"
+              placeholder="Edit task description"
+            ></textarea>
+          </label>
+          <button class="popup__submit" type="submit" id="submitEditedTask">
             Add task
           </button>
         </form>

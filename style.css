@@ -281,10 +281,10 @@ body {
 .add-task-popup {
 }
 
-.add-task-popup__title {
+.popup__title {
   margin-bottom: 1em;
 }
-.add-task-popup__form {
+.popup__form {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -325,7 +325,7 @@ body {
   font-family: "IBM Plex Sans", sans-serif;
 }
 
-.add-task-popup__submit {
+.popup__submit {
   background-color: tomato;
   color: #fff;
   border-radius: 10px;
@@ -336,6 +336,11 @@ body {
   transition: opacity 0.5s;
 }
 
-.add-task-popup__submit:hover {
+.popup__submit:hover {
   opacity: 0.5;
+}
+
+.popup__submit:active {
+  background-color: rgb(212, 79, 55);
+  opacity: 1;
 }
