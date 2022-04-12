@@ -90,12 +90,13 @@ editTaskPopup.addEventListener("click", popupTryCloseByClickOutOfContent);
 
 //addTask
 
-submitTaskBtn.addEventListener("click", kek);
-
-function kek(event) {
+submitTaskBtn.addEventListener("click", (event) => {
   event.preventDefault();
+  createNewTask();
   newTaskPopup.classList.add("hidden");
+});
 
+function createNewTask() {
   let newTaskTitle = taskTitleInput.value;
   let newTaskDescription = taskDescriptionInput.value;
 
@@ -114,25 +115,33 @@ function kek(event) {
   columns[0].prepend(taskTemplateClone);
   taskTemplateClone.addEventListener("dragstart", startDrag);
   taskTemplateClone.addEventListener("dragend", endDrag);
-  deleteTaskBtn.addEventListener("click", removeTask);
-  editTaskBtn.addEventListener("click", editTask);
+  deleteTaskBtn.addEventListener("click", () => remove(taskTemplateClone));
+  editTaskBtn.addEventListener("click", () =>
+    editTask(
+      newTaskTitle,
+      newTaskDescription,
+      clonedTaskTitle,
+      clonedTaskDescription
+    )
+  );
 
   taskTitleInput.value = "";
   taskDescriptionInput.value = "";
+}
 
-  function removeTask() {
-    taskTemplateClone.remove();
-  }
-  function editTask() {
-    editTaskPopup.classList.remove("hidden");
-    editTitleInput.focus();
-    editTitleInput.value = newTaskTitle;
-    editDescriptionInput.value = newTaskDescription;
-    submitEditedTask.addEventListener("click", (event) => {
-      event.preventDefault();
-      clonedTaskTitle.textContent = editTitleInput.value;
-      clonedTaskDescription.textContent = editDescriptionInput.value;
-      editTaskPopup.classList.add("hidden");
-    });
-  }
+function remove(element) {
+  element.remove();
+}
+
+function editTask(prevTitle, prevDescription, cardTitle, cardDescription) {
+  editTaskPopup.classList.remove("hidden");
+  editTitleInput.focus();
+  editTitleInput.value = prevTitle;
+  editDescriptionInput.value = prevDescription;
+  submitEditedTask.addEventListener("click", (event) => {
+    event.preventDefault();
+    cardTitle.textContent = editTitleInput.value;
+    cardDescription.textContent = editDescriptionInput.value;
+    editTaskPopup.classList.add("hidden");
+  });
 }

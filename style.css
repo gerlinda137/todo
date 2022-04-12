@@ -120,6 +120,8 @@ body {
 }
 .kanban {
   display: flex;
+  justify-content: center;
+  width: 100%;
   height: 100%;
 }
 .column {
@@ -130,11 +132,15 @@ body {
   height: 100%;
 }
 
+.column::before {
+  content: attr(data-column-id);
+}
+
 .column:not(:last-child) {
   margin-right: 1em;
 }
 
-.column___titile {
+.column__title {
   font-size: 0.9rem;
   margin-bottom: 1em;
 }
@@ -166,6 +172,11 @@ body {
   background-color: var(--light-card-bg);
   cursor: -webkit-grab;
   cursor: grab;
+}
+
+.task::before {
+  content: attr(data-task-id);
+  color: tomato;
 }
 
 .task:active {
