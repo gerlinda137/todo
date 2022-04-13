@@ -1,3 +1,40 @@
+// Interface:
+
+export function getModel() {
+  return model;
+}
+
+let firingCallback;
+
+// callback is called each time anything changes in the model
+export function setCallbackOnModelChanged(callback) {
+  firingCallback = callback;
+}
+
+export function makeNewTaskinModel(columnId, title, description) {
+  const cardId = generateNewId();
+  const newCard = {
+    id: cardId,
+    title: title,
+    description: description,
+  };
+  model.columns[columnId].cards.push(newCard);
+  // call callback here
+  firingCallback();
+}
+
+// export function deleteTask() {}
+
+// export function changeTask() {}
+
+// export function deleteColumn() {}
+
+// export function renameColumn() {}
+
+// export function addColumn() {}
+
+// Implementation:
+
 const model = {
   columns: [
     {
@@ -41,11 +78,7 @@ const model = {
   ],
 };
 
-export function getModel() {
-  return model;
-}
-
-export function generateNewId() {
+function generateNewId() {
   let maxNumber = 0;
   for (const column of model.columns) {
     for (const card of column.cards) {
@@ -58,17 +91,6 @@ export function generateNewId() {
   return maxNumber;
 }
 
-generateNewId();
-
-function makeNewTaskinModel(columnId, title, description) {
-  const cardId = generateNewId();
-  const newCard = {
-    id: cardId,
-    title: title,
-    description: description,
-  };
-  model.columns[columnId].cards.push(newCard);
-}
-
-makeNewTaskinModel(1, "hey", "wait");
-console.log(model);
+window.testAddCard = () => {
+  makeNewTaskinModel(1, "hey", "wait");
+};

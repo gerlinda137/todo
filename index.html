@@ -63,36 +63,6 @@
                 <h4 class="task__title">ggg</h4>
                 <p class="task__description">ggggg</p>
               </li> -->
-          <template id="columnTemplate">
-            <div data-column-id="" class="column">
-              <h3 class="column__title"></h3>
-              <ul class="column-list"></ul>
-            </div>
-          </template>
-          <template id="taskTemplate">
-            <li data-task-id="" class="column-list__item task" draggable="true">
-              <div class="task__controls">
-                <button
-                  class="task__btn task__btn--edit"
-                  id="edit-task-btn"
-                  type="button"
-                  aria-label="edit task"
-                >
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-                <button
-                  class="task__btn task__btn--delete"
-                  id="delete-task-btn"
-                  type="button"
-                  aria-label="delete task"
-                >
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-              </div>
-              <h4 class="task__title"></h4>
-              <p class="task__description"></p>
-            </li>
-          </template>
           <!-- </ul>
           </div>
           <div class="column">
@@ -114,6 +84,36 @@
           <!-- </ul>
           </div> -->
         </section>
+        <template id="columnTemplate">
+          <div data-column-id="" class="column">
+            <h3 class="column__title"></h3>
+            <ul class="column-list"></ul>
+          </div>
+        </template>
+        <template id="taskTemplate">
+          <li data-task-id="" class="column-list__item task" draggable="true">
+            <div class="task__controls">
+              <button
+                class="task__btn task__btn--edit"
+                id="edit-task-btn"
+                type="button"
+                aria-label="edit task"
+              >
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button
+                class="task__btn task__btn--delete"
+                id="delete-task-btn"
+                type="button"
+                aria-label="delete task"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+            <h4 class="task__title"></h4>
+            <p class="task__description"></p>
+          </li>
+        </template>
       </section>
     </main>
     <div class="add-task-popup popup hidden">
