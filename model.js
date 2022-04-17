@@ -23,10 +23,6 @@ export function makeNewTaskinModel(columnId, title, description) {
   firingCallback();
 }
 
-// export function deleteTask() {}
-
-// export function changeTask() {}
-
 // export function deleteColumn() {}
 
 // export function renameColumn() {}
@@ -77,6 +73,20 @@ const model = {
     },
   ],
 };
+
+export function deleteTaskFromModel(columnId, taskId) {
+  const array = model.columns[columnId].cards;
+  const index = array.findIndex((key) => key.id === taskId);
+  array.splice(index, 1);
+}
+
+export function editTaskInModel(columnId, taskId, newTitle, newDescription) {
+  const array = model.columns[columnId].cards;
+  const index = array.findIndex((key) => key.id === taskId);
+
+  array[index].title = newTitle;
+  array[index].description = newDescription;
+}
 
 function generateNewId() {
   let maxNumber = 0;
