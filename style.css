@@ -336,6 +336,10 @@ body {
   font-family: "IBM Plex Sans", sans-serif;
 }
 
+textarea.input {
+  resize: vertical;
+}
+
 .popup__submit {
   background-color: tomato;
   color: #fff;

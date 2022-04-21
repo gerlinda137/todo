@@ -1,11 +1,6 @@
 // const tasks = document.querySelectorAll(".column-list__item");
 const columns = document.querySelectorAll(".column-list");
-const addTaskBtn = document.querySelector(".header__new-task");
-const closeTaskPopup = document.querySelector(".popup__close-btn");
-const newTaskPopup = document.querySelector(".add-task-popup");
-const submitTaskBtn = document.getElementById("submitTask");
-const taskTitleInput = document.getElementById("add-task-title");
-const taskDescriptionInput = document.getElementById("add-task-description");
+
 let currentDraggedTask = null;
 
 // for (const task of tasks) {
@@ -51,50 +46,6 @@ function dropDrag() {
   this.appendChild(currentDraggedTask);
   this.classList.remove("hovered");
 }
-
-//popup new task
-
-addTaskBtn.addEventListener("click", () => {
-  newTaskPopup.classList.remove("hidden");
-  taskTitleInput.focus();
-});
-
-closeTaskPopup.addEventListener("click", () => {
-  newTaskPopup.classList.add("hidden");
-});
-
-function popupTryCloseByClickOutOfContent(event) {
-  const popupContent = this.querySelector(".popup__content");
-  if (event.target !== popupContent && !popupContent.contains(event.target)) {
-    this.classList.add("hidden");
-  }
-}
-
-newTaskPopup.addEventListener("click", popupTryCloseByClickOutOfContent);
-
-//popup edit task
-
-const editTaskPopup = document.querySelector(".edit-task-popup");
-const editTitleInput = editTaskPopup.querySelector("#edit-task-title");
-const editDescriptionInput = editTaskPopup.querySelector(
-  "#edit-task-description"
-);
-const closeEditTaskPopup = editTaskPopup.querySelector(".popup__close-btn");
-const submitEditedTask = editTaskPopup.querySelector("#submitEditedTask");
-
-closeEditTaskPopup.addEventListener("click", () => {
-  editTaskPopup.classList.add("hidden");
-});
-
-editTaskPopup.addEventListener("click", popupTryCloseByClickOutOfContent);
-
-//addTask
-
-submitTaskBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  createNewTask();
-  newTaskPopup.classList.add("hidden");
-});
 
 function createNewTask() {
   let newTaskTitle = taskTitleInput.value;

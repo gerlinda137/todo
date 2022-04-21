@@ -78,14 +78,26 @@ export function deleteTaskFromModel(columnId, taskId) {
   const array = model.columns[columnId].cards;
   const index = array.findIndex((key) => key.id === taskId);
   array.splice(index, 1);
+  firingCallback();
 }
 
-export function editTaskInModel(columnId, taskId, newTitle, newDescription) {
-  const array = model.columns[columnId].cards;
-  const index = array.findIndex((key) => key.id === taskId);
+export function editTaskInModel(taskId, newTitle, newDescription) {
+  const columns = model.columns;
+  for (const column of columns) {
+    for (const card of column.cards) {
+      if (card.id == taskId) {
+        card.title = newTitle;
+        card.description = newDescription;
+        firingCallback();
+      }
+    }
+  }
 
-  array[index].title = newTitle;
-  array[index].description = newDescription;
+  // const array = model.columns[columnId].cards;
+  // const index = array.findIndex((key) => key.id === taskId);
+
+  // array[index].title = newTitle;
+  // array[index].description = newDescription;
 }
 
 function generateNewId() {

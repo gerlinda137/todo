@@ -48,12 +48,11 @@ function DoViewThings() {
       taskTemplateClone.dataset.taskId = task.id;
 
       editTaskBtn.addEventListener("click", () => {
-        openEditTaskPopup();
+        openEditTaskPopup(task.id, task.title, task.description);
       });
 
       deleteTaskBtn.addEventListener("click", () => {
         Model.deleteTaskFromModel(column.id, task.id);
-        updateView();
       });
 
       tasks.push(taskTemplateClone);
@@ -81,41 +80,44 @@ submitTaskBtn.addEventListener("click", (event) => {
   newTaskPopup.classList.add("hidden");
   taskTitleInput.value = "";
   taskDescriptionInput.value = "";
-  updateView();
 });
 
 //editTask
 const editTaskPopup = document.querySelector(".edit-task-popup");
 
-function openEditTaskPopup() {
-  const editTitleInput = editTaskPopup.querySelector("#edit-task-title");
-  editTaskPopup.classList.remove("hidden");
-  editTitleInput.focus();
-}
-
-function getEditedTaskData() {
-  const submitEditedTask = editTaskPopup.querySelector("#submitEditedTask");
+function openEditTaskPopup(taskId, taskTitle, taskDescription) {
   const editTitleInput = editTaskPopup.querySelector("#edit-task-title");
   const editDescriptionInput = editTaskPopup.querySelector(
     "#edit-task-description"
   );
+  editTaskPopup.classList.remove("hidden");
+  editTitleInput.value = taskTitle;
+  editDescriptionInput.value = taskDescription;
+  editTitleInput.focus();
+
+  const submitEditedTask = editTaskPopup.querySelector("#submitEditedTask");
+
   submitEditedTask.addEventListener("click", (event) => {
     event.preventDefault();
+    const editedTaskData = getEditedTaskData();
+    editTaskPopup.classList.add("hidden");
+    Model.editTaskInModel(
+      taskId,
+      editedTaskData.title,
+      editedTaskData.description
+    );
   });
+}
+function getEditedTaskData() {
+  const editTitleInput = editTaskPopup.querySelector("#edit-task-title");
+  const editDescriptionInput = editTaskPopup.querySelector(
+    "#edit-task-description"
+  );
 
-  const newTaskData = {
+  return {
     title: editTitleInput.value,
     description: editDescriptionInput.value,
   };
-
-  return newTaskData;
 }
 
-// const editedTaskData = getEditedTaskData();
-// Model.editTaskInModel(
-//   column.id,
-//   task.id,
-//   editedTaskData.title,
-//   editedTaskData.description
-// );
-// updateView();
+//
