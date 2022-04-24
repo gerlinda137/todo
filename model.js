@@ -92,12 +92,24 @@ export function editTaskInModel(taskId, newTitle, newDescription) {
       }
     }
   }
+}
 
-  // const array = model.columns[columnId].cards;
-  // const index = array.findIndex((key) => key.id === taskId);
+export function changeCardColumn(taskId, newColumnId) {
+  //найти карточку в модели, записать объект карточки в переменную, удалить карточку из старой колонки и добавить в новую
 
-  // array[index].title = newTitle;
-  // array[index].description = newDescription;
+  const columns = model.columns;
+  let draggingCard = null;
+  for (const column of columns) {
+    const array = column.cards;
+    const index = array.findIndex((key) => key.id === taskId);
+    if (index >= 0) {
+      draggingCard = array[index];
+      array.splice(index, 1);
+      const newColumnIndex = columns.findIndex((key) => key.id === newColumnId);
+      columns[newColumnIndex].cards.push(draggingCard);
+      firingCallback();
+    }
+  }
 }
 
 function generateNewId() {
@@ -114,5 +126,7 @@ function generateNewId() {
 }
 
 window.testAddCard = () => {
-  makeNewTaskinModel(1, "hey", "wait");
+  changeCardColumn(2, 0);
 };
+
+window.debugModel = model;

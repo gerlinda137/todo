@@ -1,13 +1,11 @@
 // import { getModel } from "./model.js";
 import * as Model from "./model.js";
 const model = Model.getModel();
-const kanban = document.querySelector(".kanban");
+const kanban = document.querySelector(".kanban__inner");
 const submitTaskBtn = document.getElementById("submitTask");
 const newTaskPopup = document.querySelector(".add-task-popup");
 
 //generate columns
-
-// console.log("keke=k");
 
 Model.setCallbackOnModelChanged(updateView);
 
@@ -16,9 +14,44 @@ function updateView() {
   DoViewThings();
 }
 
-// Model.makeNewTaskinModel(0, "egesg", "ehesh");
-
 DoViewThings();
+let currentDraggedTask = null;
+
+//dnd functions
+function startDrag(event) {
+  event.target.classList.add("on-hold");
+  setTimeout(() => {
+    event.target.classList.add("hidden");
+  }, 0);
+  currentDraggedTask = event.target;
+}
+
+function overDrag(event) {
+  event.preventDefault();
+}
+
+function endDrag() {
+  this.classList.remove("on-hold");
+  this.classList.remove("hidden");
+}
+
+function enterDrag() {
+  this.classList.add("hovered");
+}
+
+function leaveDrag() {
+  this.classList.remove("hovered");
+}
+
+function dropDrag() {
+  console.log(currentDraggedTask);
+  this.classList.remove("hovered");
+
+  const column = this.parentElement;
+  const columnId = +column.dataset.columnId;
+  const taskId = +currentDraggedTask.dataset.taskId;
+  Model.changeCardColumn(taskId, columnId);
+}
 
 function DoViewThings() {
   for (const column of model.columns) {
@@ -47,6 +80,10 @@ function DoViewThings() {
       clonedTaskDescription.textContent = task.description;
       taskTemplateClone.dataset.taskId = task.id;
 
+      //dnd for cards
+      taskTemplateClone.addEventListener("dragstart", startDrag);
+      taskTemplateClone.addEventListener("dragend", endDrag);
+
       editTaskBtn.addEventListener("click", () => {
         openEditTaskPopup(task.id, task.title, task.description);
       });
@@ -60,6 +97,12 @@ function DoViewThings() {
 
     kanban.append(columnTemplateClone);
     const columnList = columnTemplateClone.querySelector(".column-list");
+
+    //dnd for columns
+    columnList.addEventListener("dragenter", enterDrag);
+    columnList.addEventListener("dragover", overDrag);
+    columnList.addEventListener("dragleave", leaveDrag);
+    columnList.addEventListener("drop", dropDrag);
     for (const taskCard of tasks) {
       columnList.append(taskCard);
     }

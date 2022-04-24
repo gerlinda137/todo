@@ -118,7 +118,15 @@ body {
   text-align: center;
   max-width: 70vw;
 }
+
 .kanban {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.kanban__inner {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -261,7 +269,7 @@ body {
 .popup__content {
   background-color: var(--light-card-bg);
   max-width: 500px;
-  width: 100%;
+  width: calc(100% - 2em);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -358,4 +366,32 @@ textarea.input {
 .popup__submit:active {
   background-color: rgb(212, 79, 55);
   opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .task__description {
+    line-height: 100%;
+  }
+}
+
+@media (max-width: 550px) {
+  .board {
+    padding: 0;
+  }
+
+  .kanban__inner {
+    justify-content: unset;
+  }
+}
+
+@media (max-width: 370px) {
+  .column {
+    width: 250px;
+  }
 }
