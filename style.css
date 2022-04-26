@@ -1,9 +1,13 @@
 :root {
   --light-bg: rgb(245, 241, 241);
+  --dark-bg: rgb(53, 52, 52);
   --light-card-bg: #fdfbfb;
+  --dark-card-bg: rgb(90, 88, 88);
   --light-border: grey;
   --light-txt: rgb(26, 24, 24);
+  --dark-txt: #f3f1f1;
   --light-control-btns: rgba(128, 128, 128, 0.5);
+  --dark-control-btns: #fdfbfbd8;
 }
 
 *,
@@ -317,6 +321,8 @@ body {
   outline: tomato;
   font-family: "IBM Plex Sans", sans-serif;
   transition: border 0.5s;
+  background-color: transparent;
+  color: inherit;
 }
 
 .input:active,
@@ -366,6 +372,39 @@ textarea.input {
 .popup__submit:active {
   background-color: rgb(212, 79, 55);
   opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--dark-bg);
+    color: var(--dark-txt);
+  }
+
+  .task {
+    background-color: var(--dark-card-bg);
+  }
+
+  .task__btn {
+    color: var(--dark-control-btns);
+  }
+
+  .user-menu__logout:hover {
+    color: var(--dark-txt);
+  }
+
+  .popup__content {
+    background-color: var(--dark-card-bg);
+  }
+
+  .popup__close-btn {
+    color: var(--dark-txt);
+  }
+
+  .popup__form .input {
+    background-color: var(--dark-card-bg);
+    -webkit-filter: brightness(120%);
+    filter: brightness(120%);
+  }
 }
 
 @media (max-width: 1024px) {
