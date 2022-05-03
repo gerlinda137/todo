@@ -1,14 +1,24 @@
 // Interface:
 
+let model = {
+  columns: [],
+};
+
 export function getModel() {
   return model;
 }
 
-let firingCallback;
+let firingCallbacks = [];
 
 // callback is called each time anything changes in the model
-export function setCallbackOnModelChanged(callback) {
-  firingCallback = callback;
+export function addEventListenerOnModelChanged(func) {
+  firingCallbacks.push(func);
+}
+
+function fireAllModelListeners() {
+  for (const callBack of firingCallbacks) {
+    callBack();
+  }
 }
 
 export function makeNewTaskinModel(columnId, title, description) {
@@ -20,7 +30,7 @@ export function makeNewTaskinModel(columnId, title, description) {
   };
   model.columns[columnId].cards.push(newCard);
   // call callback here
-  firingCallback();
+  fireAllModelListeners();
 }
 
 // export function deleteColumn() {}
@@ -31,54 +41,59 @@ export function makeNewTaskinModel(columnId, title, description) {
 
 // Implementation:
 
-const model = {
-  columns: [
-    {
-      id: 0,
-      title: "todo",
-      cards: [
-        {
-          id: 0,
-          title: "Убраться",
-          description: "в квартире",
-        },
-        {
-          id: 1,
-          title: "kill cat",
-          description: "do it slowly",
-        },
-      ],
-    },
-    {
-      id: 1,
-      title: "in progress",
-      cards: [
-        {
-          id: 2,
-          title: "Учиться",
-          description: "Делать приложуху",
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "done",
-      cards: [
-        {
-          id: 3,
-          title: "Погладить кота",
-          description: "Миленько",
-        },
-      ],
-    },
-  ],
-};
+// let model = {
+//   columns: [
+//     {
+//       id: 0,
+//       title: "todo",
+//       cards: [
+//         {
+//           id: 0,
+//           title: "Убраться",
+//           description: "в квартире",
+//         },
+//         {
+//           id: 1,
+//           title: "kill cat",
+//           description: "do it slowly",
+//         },
+//       ],
+//     },
+//     {
+//       id: 1,
+//       title: "in progress",
+//       cards: [
+//         {
+//           id: 2,
+//           title: "Учиться",
+//           description: "Делать приложуху",
+//         },
+//       ],
+//     },
+//     {
+//       id: 2,
+//       title: "done",
+//       cards: [
+//         {
+//           id: 3,
+//           title: "Погладить кота",
+//           description: "Миленько",
+//         },
+//       ],
+//     },
+//   ],
+// };
+
+export function rewriteModel(newModel) {
+  model = newModel;
+  fireAllModelListeners();
+}
 
 export function deleteTaskFromModel(columnId, taskId) {
   const array = model.columns[columnId].cards;
   const index = array.findIndex((key) => key.id === taskId);
   array.splice(index, 1);
-  firingCallback();
+  fireAllModelListeners();
 }
 
 export function editTaskInModel(taskId, newTitle, newDescription) {
@@ -88,7 +103,7 @@ export function editTaskInModel(taskId, newTitle, newDescription) {
       if (card.id == taskId) {
         card.title = newTitle;
         card.description = newDescription;
-        firingCallback();
+        fireAllModelListeners();
       }
     }
   }
@@ -107,7 +122,7 @@ export function changeCardColumn(taskId, newColumnId) {
       array.splice(index, 1);
       const newColumnIndex = columns.findIndex((key) => key.id === newColumnId);
       columns[newColumnIndex].cards.push(draggingCard);
-      firingCallback();
+      fireAllModelListeners();
     }
   }
 }
@@ -124,9 +139,3 @@ function generateNewId() {
   maxNumber++;
   return maxNumber;
 }
-
-window.testAddCard = () => {
-  changeCardColumn(2, 0);
-};
-
-window.debugModel = model;
