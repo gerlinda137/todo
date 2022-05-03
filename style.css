@@ -1,15 +1,4 @@
 :root {
-<<<<<<< HEAD
-  --light-bg: rgb(245, 241, 241);
-  --dark-bg: rgb(53, 52, 52);
-  --light-card-bg: #fdfbfb;
-  --dark-card-bg: rgb(90, 88, 88);
-  --light-border: grey;
-  --light-txt: rgb(26, 24, 24);
-  --dark-txt: #f3f1f1;
-  --light-control-btns: rgba(128, 128, 128, 0.5);
-  --dark-control-btns: #fdfbfbd8;
-=======
   --bg: rgb(245, 241, 241);
   /* --dark-bg: rgb(53, 52, 52); */
   --card-bg: #fdfbfb;
@@ -19,7 +8,6 @@
   /* --dark-txt: #f3f1f1; */
   --control-btns: rgba(128, 128, 128, 0.5);
   /* --dark-control-btns: #fdfbfbd8; */
->>>>>>> master
 }
 
 *,
@@ -421,11 +409,7 @@ textarea.input {
   opacity: 1;
 }
 
-<<<<<<< HEAD
-@media (prefers-color-scheme: dark) {
-=======
 /* @media (prefers-color-scheme: dark) {
->>>>>>> master
   body {
     background-color: var(--dark-bg);
     color: var(--dark-txt);
@@ -456,11 +440,7 @@ textarea.input {
     -webkit-filter: brightness(120%);
     filter: brightness(120%);
   }
-<<<<<<< HEAD
-}
-=======
 } */
->>>>>>> master
 
 @media (max-width: 1024px) {
   html {
