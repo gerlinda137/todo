@@ -389,7 +389,7 @@ textarea.input {
   resize: vertical;
 }
 
-.popup__submit {
+.submit-btn {
   background-color: tomato;
   color: #fff;
   border-radius: 10px;
@@ -397,16 +397,61 @@ textarea.input {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  transition: opacity 0.5s;
-}
-
-.popup__submit:hover {
-  opacity: 0.5;
-}
-
-.popup__submit:active {
-  background-color: rgb(212, 79, 55);
+  transition: all 0.5s;
   opacity: 1;
+}
+
+.submit-btn:hover {
+  -webkit-filter: brightness(1.3);
+  filter: brightness(1.3);
+}
+
+.submit-btn:active {
+  background-color: rgb(212, 79, 55);
+  opacity: 0.9;
+}
+
+/*auth*/
+
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.auth.hidden {
+  display: none;
+}
+.auth__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  padding: 0 1em;
+  width: 100%;
+}
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.auth__title {
+  margin-bottom: 1em;
+}
+.auth__login {
+}
+.input {
+}
+.auth__password {
 }
 
 /* @media (prefers-color-scheme: dark) {
