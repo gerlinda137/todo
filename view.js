@@ -1,20 +1,20 @@
 // import { getModel } from "./model.js";
 import * as Model from "./model.js";
-const model = Model.getModel();
+
 const kanban = document.querySelector(".kanban__inner");
 const submitTaskBtn = document.getElementById("submitTask");
 const newTaskPopup = document.querySelector(".add-task-popup");
 
 //generate columns
 
-Model.setCallbackOnModelChanged(updateView);
+Model.addEventListenerOnModelChanged(updateView);
 
-function updateView() {
+export function updateView() {
   kanban.textContent = "";
-  DoViewThings();
+  displayModel();
 }
 
-DoViewThings();
+displayModel();
 let currentDraggedTask = null;
 
 //dnd functions
@@ -53,7 +53,8 @@ function dropDrag() {
   Model.changeCardColumn(taskId, columnId);
 }
 
-function DoViewThings() {
+function displayModel() {
+  const model = Model.getModel();
   for (const column of model.columns) {
     const columnTemplate = document.getElementById("columnTemplate");
     const columnTemplateClone =
@@ -140,7 +141,9 @@ function openEditTaskPopup(taskId, taskTitle, taskDescription) {
 
   const submitEditedTask = editTaskPopup.querySelector("#submitEditedTask");
 
-  submitEditedTask.addEventListener("click", (event) => {
+  submitEditedTask.addEventListener("click", submitBtnHandler);
+
+  function submitBtnHandler(event) {
     event.preventDefault();
     const editedTaskData = getEditedTaskData();
     editTaskPopup.classList.add("hidden");
@@ -149,7 +152,8 @@ function openEditTaskPopup(taskId, taskTitle, taskDescription) {
       editedTaskData.title,
       editedTaskData.description
     );
-  });
+    submitEditedTask.removeEventListener("click", submitBtnHandler);
+  }
 }
 function getEditedTaskData() {
   const editTitleInput = editTaskPopup.querySelector("#edit-task-title");

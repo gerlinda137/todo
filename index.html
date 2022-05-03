@@ -14,6 +14,7 @@
       rel="stylesheet"
       href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
     />
+    <script src="prefered-theme.js"></script>
 
     <link rel="stylesheet" href="style.css" />
     <script
@@ -30,6 +31,15 @@
         </button>
         <h1 class="header__title">Your kanban</h1>
         <div class="user-menu">
+          <button
+            class="theme-switcher"
+            id="switcher"
+            type="button"
+            aria-label="Change color theme"
+          >
+            <i class="fa-solid fa-sun"></i>
+            <i class="fa-solid fa-moon"></i>
+          </button>
           <h2 class="user-manu__username">User</h2>
           <button class="user-menu__logout" type="button">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -88,6 +98,7 @@
               id="add-task-title"
               placeholder="Name your task"
               type="text"
+              required
             />
           </label>
           <label for="add-task-description">
@@ -116,6 +127,7 @@
               id="edit-task-title"
               placeholder="Rename your task"
               type="text"
+              required
             />
           </label>
           <label for="edit-task-description">
@@ -132,7 +144,8 @@
       </div>
     </div>
     <!-- <script src="script.js"></script> -->
-    <script type="module" src="render.js"></script>
+    <script type="module" src="view.js"></script>
+    <script type="module" src="controller.js"></script>
     <script src="popup.js"></script>
     <!-- <script src="drag-n-drop.js"></script> -->
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
