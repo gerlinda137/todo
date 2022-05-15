@@ -147,24 +147,125 @@
         </form>
       </div>
     </div>
-    <div class="auth hidden">
+    <div class="auth">
       <div class="auth__inner">
-        <h2 class="auth__title">Войти</h2>
-        <form class="auth__form">
-          <input
-            class="auth__login input"
-            type="text"
-            placeholder="Your login"
-          />
-          <input
-            class="auth__password input"
-            type="password"
-            placeholder="Your password"
-          />
-          <button class="auth__submit submit-btn" type="submit">Submit</button>
+        <h2 class="auth__title">Log In</h2>
+        <form class="auth__form" id="authForm">
+          <div class="auth__inputs">
+            <input
+              class="auth__login input"
+              id="userMailSigned"
+              type="email"
+              placeholder="Your email"
+            />
+            <input
+              class="auth__password input"
+              id="userPasswordSigned"
+              type="password"
+              placeholder="Your password"
+            />
+          </div>
+          <div class="auth__btns">
+            <button
+              class="auth__submit submit-btn"
+              id="authFormBtn"
+              type="submit"
+            >
+              Submit
+            </button>
+            <button class="auth__sign-up" id="signup-btn" type="button">
+              Don't have an account yet? Sign up
+            </button>
+          </div>
+        </form>
+        <form class="signup__form hidden" id="signUpForm">
+          <div class="signup__inputs">
+            <input
+              class="signup__login input"
+              id="userMail"
+              type="email"
+              placeholder="Your email"
+            />
+            <input
+              class="signup__password input"
+              id="userPassword"
+              type="password"
+              placeholder="Your password"
+            />
+            <!-- <input
+              class="signup__password input"
+              id="repeatPassword"
+              type="password"
+              placeholder="Repeat your password"
+            /> -->
+          </div>
+          <div class="signup__btns">
+            <button
+              class="signup__submit submit-btn"
+              id="signUpFormBtn"
+              type="submit"
+            >
+              Submit
+            </button>
+            <button class="auth__sign-up" id="login-btn" type="button">
+              Already have an account? Log in
+            </button>
+          </div>
         </form>
       </div>
     </div>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+
+      import { getDatabase } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyABHPMIaSStJbYY8wKz8ml7C14dv4jiukA",
+        authDomain: "todo-7eee9.firebaseapp.com",
+        projectId: "todo-7eee9",
+        storageBucket: "todo-7eee9.appspot.com",
+        messagingSenderId: "791119799586",
+        appId: "1:791119799586:web:50df20db598890a646717b",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const auth = getAuth(app);
+      const signUpFormBtn = document.querySelector("#signUpFormBtn");
+
+      signUpFormBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        let email = document.querySelector("#userMail").value;
+        let password = document.querySelector("#userPassword").value;
+        const authWindow = document.querySelector(".auth");
+        const userNameInHeader = document.querySelector(".user-manu__username");
+
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            // ...
+            alert("user signed");
+            authWindow.classList.add("hidden");
+            userNameInHeader.textContent = email;
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+            alert(errorMessage);
+          });
+      });
+    </script>
     <!-- <script src="script.js"></script> -->
     <script type="module" src="view.js"></script>
     <script type="module" src="controller.js"></script>
@@ -172,5 +273,6 @@
     <!-- <script src="drag-n-drop.js"></script> -->
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     <script src="kanban-to-slider.js"></script>
+    <script src="auth.js"></script>
   </body>
 </html>

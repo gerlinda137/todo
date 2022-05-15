@@ -438,10 +438,16 @@ textarea.input {
   padding: 0 1em;
   width: 100%;
 }
-.auth__form {
+.auth__form,
+.signup__form {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.auth__form.hidden,
+.signup__form.hidden {
+  display: none;
 }
 
 .auth__title {
@@ -452,6 +458,24 @@ textarea.input {
 .input {
 }
 .auth__password {
+}
+
+.auth__btns,
+.signup__btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.auth__sign-up {
+  color: tomato;
+  margin-left: 0.5em;
+  font-size: 0.7rem;
+  transition: color 0.5s;
+}
+
+.auth__sign-up:hover {
+  color: var(--txt);
 }
 
 /* @media (prefers-color-scheme: dark) {
