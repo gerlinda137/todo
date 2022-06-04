@@ -360,6 +360,10 @@ body {
   color: inherit;
 }
 
+input.errored {
+  border-color: #d52c4c;
+}
+
 .input:active,
 .input:focus {
   border-color: tomato;
@@ -383,6 +387,12 @@ body {
 
 .input::placeholder {
   font-family: "IBM Plex Sans", sans-serif;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-transition: background-color 600000s 0s, color 600000s 0s;
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
 
 textarea.input {
@@ -453,12 +463,6 @@ textarea.input {
 .auth__title {
   margin-bottom: 1em;
 }
-.auth__login {
-}
-.input {
-}
-.auth__password {
-}
 
 .auth__btns,
 .signup__btns {
@@ -476,6 +480,77 @@ textarea.input {
 
 .auth__sign-up:hover {
   color: var(--txt);
+}
+
+.error-message {
+  z-index: 101;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, 0);
+  display: flex;
+  align-items: center;
+  color: tomato;
+  padding: 0.5rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid tomato;
+  font-size: 0.7em;
+}
+
+.error-message__txt {
+  margin-left: 0.5rem;
+}
+
+.error-message.hidden {
+  display: none;
+}
+
+@-webkit-keyframes swing {
+  15% {
+    transform: translateX(5px);
+  }
+  30% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  65% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes swing {
+  15% {
+    transform: translateX(5px);
+  }
+  30% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  65% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.swing {
+  -webkit-animation: swing 0.5s ease;
+  animation: swing 0.5s ease;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
 }
 
 /* @media (prefers-color-scheme: dark) {
