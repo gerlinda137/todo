@@ -185,6 +185,12 @@
         <form class="signup__form hidden" id="signUpForm">
           <div class="signup__inputs">
             <input
+              class="input"
+              id="userName"
+              type="text"
+              placeholder="Your name"
+            />
+            <input
               class="signup__login input"
               id="userMail"
               type="email"
@@ -227,13 +233,17 @@
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
 
-      import { getDatabase } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js";
       import {
         getAuth,
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
         signOut,
       } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+      } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js";
 
       // Your web app's Firebase configuration
       const firebaseConfig = {
@@ -273,6 +283,7 @@
         errorPopup.classList.add("hidden");
         let email = document.querySelector("#userMail").value;
         let password = document.querySelector("#userPassword").value;
+        let name = document.querySelector("#userName").value;
         const authWindow = document.querySelector(".auth");
         const userNameInHeader = document.querySelector(".user-manu__username");
         const signUpInputsContainer = document.querySelector(".signup__inputs");
@@ -284,7 +295,16 @@
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
+            const userId = user.uid;
             // ...
+
+            //write to database
+
+            set(ref(database, "users/" + userId), {
+              email,
+              name,
+            });
+
             alert("user signed");
             authWindow.classList.add("hidden");
             userNameInHeader.textContent = email;
