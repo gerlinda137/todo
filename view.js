@@ -1,20 +1,25 @@
-// import { getModel } from "./model.js";
 import * as Model from "./model.js";
 
 const kanban = document.querySelector(".kanban__inner");
 const submitTaskBtn = document.getElementById("submitTask");
 const newTaskPopup = document.querySelector(".add-task-popup");
 
-//generate columns
+const errorPopup = document.querySelector(".error-message");
+const errorPopupTxt = errorPopup.querySelector(".error-message__txt");
 
-Model.addEventListenerOnModelChanged(updateView);
-
-export function updateView() {
-  kanban.textContent = "";
-  displayModel();
+export function showError(errorMessage) {
+  errorPopup.classList.remove("hidden");
+  errorPopupTxt.textContent = errorMessage;
 }
 
+export function hideError() {
+  errorPopup.classList.add("hidden");
+}
+
+Model.addEventListenerOnModelChanged(displayModel);
+
 displayModel();
+
 let currentDraggedTask = null;
 
 //dnd functions
@@ -44,7 +49,6 @@ function leaveDrag() {
 }
 
 function dropDrag() {
-  console.log(currentDraggedTask);
   this.classList.remove("hovered");
 
   const column = this.parentElement;
@@ -54,6 +58,7 @@ function dropDrag() {
 }
 
 function displayModel() {
+  kanban.textContent = "";
   const model = Model.getModel();
   for (const column of model.columns) {
     const columnTemplate = document.getElementById("columnTemplate");
@@ -169,26 +174,3 @@ function getEditedTaskData() {
     description: editDescriptionInput.value,
   };
 }
-
-// auth
-
-const authWindow = document.querySelector(".auth");
-const signUpBtn = authWindow.querySelector("#signup-btn");
-const logInBtn = authWindow.querySelector("#login-btn");
-const authForm = authWindow.querySelector("#authForm");
-const signUpForm = authWindow.querySelector("#signUpForm");
-const authTitle = authWindow.querySelector(".auth__title");
-const authInputs = authWindow.querySelector(".auth__inputs");
-
-function transformAuthWindow(titleTxt, hidingForm, revealingForm) {
-  authTitle.textContent = titleTxt;
-  hidingForm.classList.add("hidden");
-  revealingForm.classList.remove("hidden");
-}
-
-signUpBtn.addEventListener("click", () =>
-  transformAuthWindow("Sign Up", authForm, signUpForm)
-);
-logInBtn.addEventListener("click", () =>
-  transformAuthWindow("Log In", signUpForm, authForm)
-);

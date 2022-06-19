@@ -1,5 +1,33 @@
 // Interface:
 
+export function generateInitialModel() {
+  return {
+    columns: [
+      {
+        id: 0,
+        title: "todo",
+        cards: [
+          {
+            id: 0,
+            title: "Add your tasks to the board",
+            description: "and write some description",
+          },
+        ],
+      },
+      {
+        id: 1,
+        title: "in progress",
+        cards: [],
+      },
+      {
+        id: 2,
+        title: "done",
+        cards: [],
+      },
+    ],
+  };
+}
+
 let model = {
   columns: [],
 };

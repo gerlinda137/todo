@@ -1,5 +1,6 @@
 import * as Model from "./model.js";
 import * as View from "./view.js";
+import * as ViewAuth from "./view-auth.js";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
@@ -19,55 +20,6 @@ import {
   get,
 } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js";
 
-// Model.addEventListenerOnModelChanged(View.updateView);
-
-// function storeModel() {
-//   const model = Model.getModel();
-//   localStorage.setItem("model", JSON.stringify(model));
-// }
-// Model.addEventListenerOnModelChanged(storeModel);
-
-// let storagedModel = localStorage.getItem("model");
-// if (storagedModel !== null) {
-//   Model.rewriteModel(JSON.parse(storagedModel));
-// } else {
-//   Model.rewriteModel(generateDebugModel());
-// }
-
-export function generateInitialModel() {
-  return {
-    columns: [
-      {
-        id: 0,
-        title: "todo",
-        cards: [
-          {
-            id: 0,
-            title: "Add your tasks to the board",
-            description: "and write some description",
-          },
-        ],
-      },
-      {
-        id: 1,
-        title: "in progress",
-        cards: [],
-      },
-      {
-        id: 2,
-        title: "done",
-        cards: [],
-      },
-    ],
-  };
-}
-
-//debug tools
-// window.debugModel = model;
-// window.testAddCard = () => {
-//   changeCardColumn(2, 0);
-// };
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyABHPMIaSStJbYY8wKz8ml7C14dv4jiukA",
@@ -82,37 +34,51 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth(app);
-const signUpFormBtn = document.querySelector("#signUpFormBtn");
-const authFormBtn = document.querySelector("#authFormBtn");
-const logoutBtn = document.querySelector("#logoutbtn");
-const authPopupInner = document.querySelector(".auth__inner");
-const errorPopup = document.querySelector(".error-message");
-const errorPopupTxt = errorPopup.querySelector(".error-message__txt");
-const authWindow = document.querySelector(".auth");
 
-function markInputsAsErrored(inputs) {
-  for (const input of inputs) {
-    input.classList.add("errored");
-  }
+function authError(errorMessage) {
+  ViewAuth.error();
+  View.showError(errorMessage);
 }
 
-function unMarkInputsAsErrored(inputs) {
-  for (const input of inputs) {
-    input.classList.remove("errored");
-  }
+function login(email, password) {
+  View.hideError();
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      // ...
+      // alert("user signed in");
+      //userNameInHeader.textContent = email;
+
+      const databaseRef = ref(database);
+      const userId = user.uid;
+
+      get(child(databaseRef, `users/${userId}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log(snapshot.val());
+            const userData = snapshot.val();
+            // userNameInHeader.textContent = userData.name;
+            const userModel = userData.model;
+            // console.log(userModel);
+            Model.rewriteModel(userModel);
+            ViewAuth.hide();
+          } else {
+            authError("No data available");
+          }
+        })
+        .catch((error) => {
+          authError(error.message);
+        });
+    })
+    .catch((error) => {
+      authError(error.message);
+    });
 }
 
-signUpFormBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  errorPopup.classList.add("hidden");
-  let email = document.querySelector("#userMail").value;
-  let password = document.querySelector("#userPassword").value;
-  let name = document.querySelector("#userName").value;
-  const userNameInHeader = document.querySelector(".user-manu__username");
-  const signUpInputsContainer = document.querySelector(".signup__inputs");
-  const signUpInputs = signUpInputsContainer.querySelectorAll(".input");
-
-  unMarkInputsAsErrored(signUpInputs);
+function signUp(name, email, password) {
+  View.hideError();
 
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -127,97 +93,37 @@ signUpFormBtn.addEventListener("click", (e) => {
         name,
       });
 
-      alert("user signed");
-      authWindow.classList.add("hidden");
-      userNameInHeader.textContent = email;
-      Model.rewriteModel(generateInitialModel());
+      ViewAuth.hide();
+
+      Model.rewriteModel(Model.generateInitialModel());
+
+      // alert("user signed");
+      // const userNameInHeader = document.querySelector(".user-manu__username");
+      // userNameInHeader.textContent = email; // TODO: this is the part of main screen
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      // ..
-      authPopupInner.classList.add("swing");
-      errorPopup.classList.remove("hidden");
-      errorPopupTxt.textContent = errorMessage;
-      markInputsAsErrored(signUpInputs);
-      setTimeout(() => {
-        authPopupInner.classList.remove("swing");
-      }, 500);
+      authError(error.message);
     });
-});
+}
 
-authFormBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  errorPopup.classList.add("hidden");
-  let email = document.querySelector("#userMailSigned").value;
-  let password = document.querySelector("#userPasswordSigned").value;
-  const userNameInHeader = document.querySelector(".user-manu__username");
-  const authInputsContainer = document.querySelector(".auth__inputs");
-  const authInputs = authInputsContainer.querySelectorAll(".input");
+showAuth();
 
-  unMarkInputsAsErrored(authInputs);
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      // ...
-      alert("user signed in");
-      authWindow.classList.add("hidden");
-      //userNameInHeader.textContent = email;
-
-      const databaseRef = ref(database);
-      const userId = user.uid;
-
-      get(child(databaseRef, `users/${userId}`))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            console.log(snapshot.val());
-            const userData = snapshot.val();
-            userNameInHeader.textContent = userData.name;
-            const userModel = userData.model;
-            console.log(userModel);
-            Model.rewriteModel(userModel);
-          } else {
-            console.log("No data available");
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-      authPopupInner.classList.add("swing");
-      errorPopup.classList.remove("hidden");
-      errorPopupTxt.textContent = errorMessage;
-      markInputsAsErrored(authInputs);
-      setTimeout(() => {
-        authPopupInner.classList.remove("swing");
-      }, 500);
-    });
-});
+const logoutBtn = document.querySelector("#logoutbtn");
 
 logoutBtn.addEventListener("click", (e) => {
-  errorPopup.classList.add("hidden");
   signOut(auth)
     .then(() => {
-      alert("user signed out");
-      authWindow.classList.remove("hidden");
+      showAuth();
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-      authPopupInner.classList.add("swing");
-      errorPopup.classList.remove("hidden");
-      errorPopupTxt.textContent = errorMessage;
-      setTimeout(() => {
-        authPopupInner.classList.remove("swing");
-      }, 500);
+      View.showError(error.message);
     });
 });
+
+function showAuth() {
+  ViewAuth.show(login, signUp);
+  View.hideError();
+}
 
 //сохранение данных в о карточках в бд
 
