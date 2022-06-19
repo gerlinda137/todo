@@ -69,31 +69,34 @@ function displayModel() {
     const taskTemplate = document.getElementById("taskTemplate");
     let tasks = [];
 
-    for (const task of column.cards) {
-      const taskTemplateClone =
-        taskTemplate.content.firstElementChild.cloneNode(true);
-      const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
-      const clonedTaskDescription =
-        taskTemplateClone.querySelector(".task__description");
-      const deleteTaskBtn = taskTemplateClone.querySelector("#delete-task-btn");
-      const editTaskBtn = taskTemplateClone.querySelector("#edit-task-btn");
-      clonedTaskTitle.textContent = task.title;
-      clonedTaskDescription.textContent = task.description;
-      taskTemplateClone.dataset.taskId = task.id;
+    if (column.cards !== undefined) {
+      for (const task of column.cards) {
+        const taskTemplateClone =
+          taskTemplate.content.firstElementChild.cloneNode(true);
+        const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
+        const clonedTaskDescription =
+          taskTemplateClone.querySelector(".task__description");
+        const deleteTaskBtn =
+          taskTemplateClone.querySelector("#delete-task-btn");
+        const editTaskBtn = taskTemplateClone.querySelector("#edit-task-btn");
+        clonedTaskTitle.textContent = task.title;
+        clonedTaskDescription.textContent = task.description;
+        taskTemplateClone.dataset.taskId = task.id;
 
-      //dnd for cards
-      taskTemplateClone.addEventListener("dragstart", startDrag);
-      taskTemplateClone.addEventListener("dragend", endDrag);
+        //dnd for cards
+        taskTemplateClone.addEventListener("dragstart", startDrag);
+        taskTemplateClone.addEventListener("dragend", endDrag);
 
-      editTaskBtn.addEventListener("click", () => {
-        openEditTaskPopup(task.id, task.title, task.description);
-      });
+        editTaskBtn.addEventListener("click", () => {
+          openEditTaskPopup(task.id, task.title, task.description);
+        });
 
-      deleteTaskBtn.addEventListener("click", () => {
-        Model.deleteTaskFromModel(column.id, task.id);
-      });
+        deleteTaskBtn.addEventListener("click", () => {
+          Model.deleteTaskFromModel(column.id, task.id);
+        });
 
-      tasks.push(taskTemplateClone);
+        tasks.push(taskTemplateClone);
+      }
     }
 
     kanban.append(columnTemplateClone);

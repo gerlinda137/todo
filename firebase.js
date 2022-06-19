@@ -1,3 +1,6 @@
+import * as Model from "./model.js";
+import * as Controller from "./controller.js";
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
 
@@ -6,13 +9,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
 import {
   getDatabase,
   ref,
   set,
   update,
+  child,
+  get,
 } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js";
 
 // Your web app's Firebase configuration
@@ -69,7 +73,6 @@ signUpFormBtn.addEventListener("click", (e) => {
       // ...
 
       //write to database
-
       set(ref(database, "users/" + userId), {
         email,
         name,
@@ -78,6 +81,7 @@ signUpFormBtn.addEventListener("click", (e) => {
       alert("user signed");
       authWindow.classList.add("hidden");
       userNameInHeader.textContent = email;
+      Model.rewriteModel(Controller.generateInitialModel());
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -112,7 +116,27 @@ authFormBtn.addEventListener("click", (e) => {
       // ...
       alert("user signed in");
       authWindow.classList.add("hidden");
-      userNameInHeader.textContent = email;
+      //userNameInHeader.textContent = email;
+
+      const databaseRef = ref(database);
+      const userId = user.uid;
+
+      get(child(databaseRef, `users/${userId}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot.val());
+            const userData = snapshot.val();
+            userNameInHeader.textContent = userData.name;
+            const userModel = userData.model;
+            console.log(userModel);
+            Model.rewriteModel(userModel);
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -150,20 +174,18 @@ logoutBtn.addEventListener("click", (e) => {
 
 //сохранение данных в о карточках в бд
 
-import * as Model from "./model.js";
-
 function pushDataToDb() {
   const model = Model.getModel();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const userId = user.uid;
-      update(ref(database, "users/" + userId), {
-        model,
-      });
-    } else {
-      console.log("Не войдено");
-    }
-  });
+  const user = auth.currentUser;
+
+  if (user) {
+    const userId = user.uid;
+    update(ref(database, "users/" + userId), {
+      model,
+    });
+  } else {
+    console.log("Не войдено");
+  }
 }
 
 Model.addEventListenerOnModelChanged(pushDataToDb);

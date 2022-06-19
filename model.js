@@ -99,6 +99,9 @@ export function deleteTaskFromModel(columnId, taskId) {
 export function editTaskInModel(taskId, newTitle, newDescription) {
   const columns = model.columns;
   for (const column of columns) {
+    if (column.cards == undefined) {
+      column.cards = [];
+    }
     for (const card of column.cards) {
       if (card.id == taskId) {
         card.title = newTitle;
@@ -115,12 +118,18 @@ export function changeCardColumn(taskId, newColumnId) {
   const columns = model.columns;
   let draggingCard = null;
   for (const column of columns) {
+    if (column.cards == undefined) {
+      column.cards = [];
+    }
     const array = column.cards;
     const index = array.findIndex((key) => key.id === taskId);
     if (index >= 0) {
       draggingCard = array[index];
       array.splice(index, 1);
       const newColumnIndex = columns.findIndex((key) => key.id === newColumnId);
+      if (columns[newColumnIndex].cards == undefined) {
+        columns[newColumnIndex].cards = [];
+      }
       columns[newColumnIndex].cards.push(draggingCard);
       fireAllModelListeners();
     }
@@ -130,9 +139,11 @@ export function changeCardColumn(taskId, newColumnId) {
 function generateNewId() {
   let maxNumber = 0;
   for (const column of model.columns) {
-    for (const card of column.cards) {
-      if (card.id > maxNumber) {
-        maxNumber = card.id;
+    if (column.cards !== undefined) {
+      for (const card of column.cards) {
+        if (card.id > maxNumber) {
+          maxNumber = card.id;
+        }
       }
     }
   }

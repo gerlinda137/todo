@@ -3,20 +3,20 @@ import * as View from "./view.js";
 
 // Model.addEventListenerOnModelChanged(View.updateView);
 
-function storeModel() {
-  const model = Model.getModel();
-  localStorage.setItem("model", JSON.stringify(model));
-}
-Model.addEventListenerOnModelChanged(storeModel);
+// function storeModel() {
+//   const model = Model.getModel();
+//   localStorage.setItem("model", JSON.stringify(model));
+// }
+// Model.addEventListenerOnModelChanged(storeModel);
 
-let storagedModel = localStorage.getItem("model");
-if (storagedModel !== null) {
-  Model.rewriteModel(JSON.parse(storagedModel));
-} else {
-  Model.rewriteModel(generateDebugModel());
-}
+// let storagedModel = localStorage.getItem("model");
+// if (storagedModel !== null) {
+//   Model.rewriteModel(JSON.parse(storagedModel));
+// } else {
+//   Model.rewriteModel(generateDebugModel());
+// }
 
-function generateDebugModel() {
+export function generateInitialModel() {
   return {
     columns: [
       {
@@ -25,37 +25,20 @@ function generateDebugModel() {
         cards: [
           {
             id: 0,
-            title: "Убраться",
-            description: "в квартире",
-          },
-          {
-            id: 1,
-            title: "kill cat",
-            description: "do it slowly",
+            title: "Add your tasks to the board",
+            description: "and write some description",
           },
         ],
       },
       {
         id: 1,
         title: "in progress",
-        cards: [
-          {
-            id: 2,
-            title: "Учиться",
-            description: "Делать приложуху",
-          },
-        ],
+        cards: [],
       },
       {
         id: 2,
         title: "done",
-        cards: [
-          {
-            id: 3,
-            title: "Погладить кота",
-            description: "Миленько",
-          },
-        ],
+        cards: [],
       },
     ],
   };
