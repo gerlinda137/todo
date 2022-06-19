@@ -1,20 +1,25 @@
-// import { getModel } from "./model.js";
 import * as Model from "./model.js";
 
 const kanban = document.querySelector(".kanban__inner");
 const submitTaskBtn = document.getElementById("submitTask");
 const newTaskPopup = document.querySelector(".add-task-popup");
 
-//generate columns
+const errorPopup = document.querySelector(".error-message");
+const errorPopupTxt = errorPopup.querySelector(".error-message__txt");
 
-Model.addEventListenerOnModelChanged(updateView);
-
-export function updateView() {
-  kanban.textContent = "";
-  displayModel();
+export function showError(errorMessage) {
+  errorPopup.classList.remove("hidden");
+  errorPopupTxt.textContent = errorMessage;
 }
 
+export function hideError() {
+  errorPopup.classList.add("hidden");
+}
+
+Model.addEventListenerOnModelChanged(displayModel);
+
 displayModel();
+
 let currentDraggedTask = null;
 
 //dnd functions
@@ -44,7 +49,6 @@ function leaveDrag() {
 }
 
 function dropDrag() {
-  console.log(currentDraggedTask);
   this.classList.remove("hovered");
 
   const column = this.parentElement;
@@ -54,6 +58,7 @@ function dropDrag() {
 }
 
 function displayModel() {
+  kanban.textContent = "";
   const model = Model.getModel();
   for (const column of model.columns) {
     const columnTemplate = document.getElementById("columnTemplate");
@@ -69,31 +74,34 @@ function displayModel() {
     const taskTemplate = document.getElementById("taskTemplate");
     let tasks = [];
 
-    for (const task of column.cards) {
-      const taskTemplateClone =
-        taskTemplate.content.firstElementChild.cloneNode(true);
-      const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
-      const clonedTaskDescription =
-        taskTemplateClone.querySelector(".task__description");
-      const deleteTaskBtn = taskTemplateClone.querySelector("#delete-task-btn");
-      const editTaskBtn = taskTemplateClone.querySelector("#edit-task-btn");
-      clonedTaskTitle.textContent = task.title;
-      clonedTaskDescription.textContent = task.description;
-      taskTemplateClone.dataset.taskId = task.id;
+    if (column.cards !== undefined) {
+      for (const task of column.cards) {
+        const taskTemplateClone =
+          taskTemplate.content.firstElementChild.cloneNode(true);
+        const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
+        const clonedTaskDescription =
+          taskTemplateClone.querySelector(".task__description");
+        const deleteTaskBtn =
+          taskTemplateClone.querySelector("#delete-task-btn");
+        const editTaskBtn = taskTemplateClone.querySelector("#edit-task-btn");
+        clonedTaskTitle.textContent = task.title;
+        clonedTaskDescription.textContent = task.description;
+        taskTemplateClone.dataset.taskId = task.id;
 
-      //dnd for cards
-      taskTemplateClone.addEventListener("dragstart", startDrag);
-      taskTemplateClone.addEventListener("dragend", endDrag);
+        //dnd for cards
+        taskTemplateClone.addEventListener("dragstart", startDrag);
+        taskTemplateClone.addEventListener("dragend", endDrag);
 
-      editTaskBtn.addEventListener("click", () => {
-        openEditTaskPopup(task.id, task.title, task.description);
-      });
+        editTaskBtn.addEventListener("click", () => {
+          openEditTaskPopup(task.id, task.title, task.description);
+        });
 
-      deleteTaskBtn.addEventListener("click", () => {
-        Model.deleteTaskFromModel(column.id, task.id);
-      });
+        deleteTaskBtn.addEventListener("click", () => {
+          Model.deleteTaskFromModel(column.id, task.id);
+        });
 
-      tasks.push(taskTemplateClone);
+        tasks.push(taskTemplateClone);
+      }
     }
 
     kanban.append(columnTemplateClone);
@@ -166,5 +174,3 @@ function getEditedTaskData() {
     description: editDescriptionInput.value,
   };
 }
-
-//

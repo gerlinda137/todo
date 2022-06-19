@@ -1,3 +1,10 @@
+function popupTryCloseByClickOutOfContent(event) {
+  const popupContent = this.querySelector(".popup__content");
+  if (event.target !== popupContent && !popupContent.contains(event.target)) {
+    this.classList.add("hidden");
+  }
+}
+
 //popup new task
 const addTaskBtn = document.querySelector(".header__new-task");
 const closeTaskPopup = document.querySelector(".popup__close-btn");
@@ -13,13 +20,6 @@ addTaskBtn.addEventListener("click", () => {
 closeTaskPopup.addEventListener("click", () => {
   newTaskPopup.classList.add("hidden");
 });
-
-function popupTryCloseByClickOutOfContent(event) {
-  const popupContent = this.querySelector(".popup__content");
-  if (event.target !== popupContent && !popupContent.contains(event.target)) {
-    this.classList.add("hidden");
-  }
-}
 
 newTaskPopup.addEventListener("click", popupTryCloseByClickOutOfContent);
 

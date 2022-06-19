@@ -41,7 +41,7 @@
             <i class="fa-solid fa-moon"></i>
           </button>
           <h2 class="user-manu__username">User</h2>
-          <button class="user-menu__logout" type="button">
+          <button class="user-menu__logout" id="logoutbtn" type="button">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
         </div>
@@ -108,7 +108,11 @@
               placeholder="Add task description"
             ></textarea>
           </label>
-          <button class="popup__submit" type="submit" id="submitTask">
+          <button
+            class="popup__submit submit-btn"
+            type="submit"
+            id="submitTask"
+          >
             Add task
           </button>
         </form>
@@ -137,17 +141,96 @@
               placeholder="Edit task description"
             ></textarea>
           </label>
-          <button class="popup__submit" type="submit" id="submitEditedTask">
+          <button
+            class="popup__submit submit-btn"
+            type="submit"
+            id="submitEditedTask"
+          >
             Add task
           </button>
         </form>
       </div>
     </div>
-    <!-- <script src="script.js"></script> -->
-    <script type="module" src="view.js"></script>
+    <div class="auth">
+      <div class="auth__inner">
+        <h2 class="auth__title">Log In</h2>
+        <form class="auth__form" id="authForm">
+          <div class="auth__inputs">
+            <input
+              class="auth__login input"
+              id="userMailSigned"
+              type="email"
+              placeholder="Your email"
+            />
+            <input
+              class="auth__password input"
+              id="userPasswordSigned"
+              type="password"
+              placeholder="Your password"
+            />
+          </div>
+          <div class="auth__btns">
+            <button
+              class="auth__submit submit-btn"
+              id="authFormBtn"
+              type="submit"
+            >
+              Submit
+            </button>
+            <button class="auth__sign-up" id="signup-btn" type="button">
+              Don't have an account yet? Sign up
+            </button>
+          </div>
+        </form>
+        <form class="signup__form hidden" id="signUpForm">
+          <div class="signup__inputs">
+            <input
+              class="input"
+              id="userName"
+              type="text"
+              placeholder="Your name"
+            />
+            <input
+              class="signup__login input"
+              id="userMail"
+              type="email"
+              placeholder="Your email"
+            />
+            <input
+              class="signup__password input"
+              id="userPassword"
+              type="password"
+              placeholder="Your password"
+            />
+            <!-- <input
+              class="signup__password input"
+              id="repeatPassword"
+              type="password"
+              placeholder="Repeat your password"
+            /> -->
+          </div>
+          <div class="signup__btns">
+            <button
+              class="signup__submit submit-btn"
+              id="signUpFormBtn"
+              type="submit"
+            >
+              Submit
+            </button>
+            <button class="auth__sign-up" id="login-btn" type="button">
+              Already have an account? Log in
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="error-message hidden">
+      <i class="fa-solid fa-exclamation"></i>
+      <p class="error-message__txt">hghghg</p>
+    </div>
+
     <script type="module" src="controller.js"></script>
     <script src="popup.js"></script>
-    <!-- <script src="drag-n-drop.js"></script> -->
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     <script src="kanban-to-slider.js"></script>
   </body>
