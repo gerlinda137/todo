@@ -10,6 +10,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
 import {
   getDatabase,
@@ -42,6 +43,7 @@ function authError(errorMessage) {
 
 function login(email, password) {
   View.hideError();
+  ViewAuth.showProgressLoader();
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -63,23 +65,29 @@ function login(email, password) {
             const userModel = userData.model;
             // console.log(userModel);
             Model.rewriteModel(userModel);
+            View.setUserNameInHeader(userData.name);
+
             ViewAuth.hide();
+            ViewAuth.hideProgressLoader();
           } else {
             authError("No data available");
           }
         })
         .catch((error) => {
           authError(error.message);
+          ViewAuth.hideProgressLoader();
         });
+      // ViewAuth.hideProgressLoader();
     })
     .catch((error) => {
       authError(error.message);
+      ViewAuth.hideProgressLoader();
     });
 }
 
 function signUp(name, email, password) {
   View.hideError();
-
+  ViewAuth.showProgressLoader();
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
@@ -92,7 +100,7 @@ function signUp(name, email, password) {
         email,
         name,
       });
-
+      View.setUserNameInHeader(name);
       ViewAuth.hide();
 
       Model.rewriteModel(Model.generateInitialModel());
@@ -100,9 +108,11 @@ function signUp(name, email, password) {
       // alert("user signed");
       // const userNameInHeader = document.querySelector(".user-manu__username");
       // userNameInHeader.textContent = email; // TODO: this is the part of main screen
+      ViewAuth.hideProgressLoader();
     })
     .catch((error) => {
       authError(error.message);
+      ViewAuth.hideProgressLoader();
     });
 }
 
@@ -114,10 +124,13 @@ logoutBtn.addEventListener("click", (e) => {
   signOut(auth)
     .then(() => {
       showAuth();
+      // ViewAuth.hideProgressLoader();
     })
     .catch((error) => {
       View.showError(error.message);
+      // ViewAuth.hideProgressLoader();
     });
+  // ViewAuth.hideProgressLoader();
 });
 
 function showAuth() {
@@ -125,7 +138,7 @@ function showAuth() {
   View.hideError();
 }
 
-//сохранение данных в о карточках в бд
+//сохранение данных о карточках в бд
 
 function pushDataToDb() {
   const model = Model.getModel();
@@ -142,3 +155,42 @@ function pushDataToDb() {
 }
 
 Model.addEventListenerOnModelChanged(pushDataToDb);
+
+//чекать залогинен ли юзер (если да, подгружать модель)
+
+// ViewAuth.showProgressLoader();
+
+onAuthStateChanged(auth, (user) => {
+  ViewAuth.showProgressLoader();
+  if (user) {
+    const databaseRef = ref(database);
+    const userId = user.uid;
+
+    get(child(databaseRef, `users/${userId}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(snapshot.val());
+          const userData = snapshot.val();
+          // userNameInHeader.textContent = userData.name;
+          const userModel = userData.model;
+          // console.log(userModel);
+          Model.rewriteModel(userModel);
+          View.setUserNameInHeader(userData.name);
+
+          ViewAuth.hide();
+          ViewAuth.hideProgressLoader();
+        } else {
+          // authError("No data available");
+          ViewAuth.hideProgressLoader();
+        }
+      })
+      .catch((error) => {
+        authError(error.message);
+        ViewAuth.hideProgressLoader();
+      });
+  } else {
+    ViewAuth.hideProgressLoader();
+    ViewAuth.showAuthWindow();
+  }
+  // ViewAuth.hideProgressLoader();
+});

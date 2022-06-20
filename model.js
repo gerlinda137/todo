@@ -56,6 +56,9 @@ export function makeNewTaskinModel(columnId, title, description) {
     title: title,
     description: description,
   };
+  if (model.columns[columnId].cards == undefined) {
+    model.columns[columnId].cards = [];
+  }
   model.columns[columnId].cards.push(newCard);
   // call callback here
   fireAllModelListeners();
