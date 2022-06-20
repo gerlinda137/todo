@@ -42,6 +42,7 @@ function authError(errorMessage) {
 
 function login(email, password) {
   View.hideError();
+  ViewAuth.showProgressLoader();
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -63,6 +64,7 @@ function login(email, password) {
             const userModel = userData.model;
             // console.log(userModel);
             Model.rewriteModel(userModel);
+
             ViewAuth.hide();
           } else {
             authError("No data available");
@@ -70,16 +72,18 @@ function login(email, password) {
         })
         .catch((error) => {
           authError(error.message);
+          ViewAuth.hideProgressLoader();
         });
     })
     .catch((error) => {
       authError(error.message);
+      ViewAuth.hideProgressLoader();
     });
 }
 
 function signUp(name, email, password) {
   View.hideError();
-
+  ViewAuth.showProgressLoader();
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
@@ -103,6 +107,7 @@ function signUp(name, email, password) {
     })
     .catch((error) => {
       authError(error.message);
+      ViewAuth.hideProgressLoader();
     });
 }
 
@@ -118,6 +123,7 @@ logoutBtn.addEventListener("click", (e) => {
     .catch((error) => {
       View.showError(error.message);
     });
+  ViewAuth.hideProgressLoader();
 });
 
 function showAuth() {

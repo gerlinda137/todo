@@ -448,6 +448,11 @@ textarea.input {
   padding: 0 1em;
   width: 100%;
 }
+
+.auth__inner.hidden {
+  display: none;
+}
+
 .auth__form,
 .signup__form {
   display: flex;
@@ -553,38 +558,67 @@ textarea.input {
   animation-iteration-count: 1;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  body {
-    background-color: var(--dark-bg);
-    color: var(--dark-txt);
-  }
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+}
 
-  .task {
-    background-color: var(--dark-card-bg);
-  }
+.loader.hidden {
+  display: none;
+}
 
-  .task__btn {
-    color: var(--dark-control-btns);
-  }
+.circle-outter {
+  width: 50px;
+  height: 50px;
+  /* border-radius: 50%;
+  background-color: rgb(255, 99, 71, 0.5); */
+  position: relative;
+}
 
-  .user-menu__logout:hover {
-    color: var(--dark-txt);
-  }
+.circle-inner-two {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 5px solid tomato;
+  border-style: inset;
+  -webkit-animation: 1s loader infinite;
+  animation: 1s loader infinite;
+}
 
-  .popup__content {
-    background-color: var(--dark-card-bg);
-  }
+.circle-inner {
+  width: 80%;
+  height: 80%;
+  background-color: var(--bg);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
 
-  .popup__close-btn {
-    color: var(--dark-txt);
+@-webkit-keyframes loader {
+  0% {
+    transform: rotate(0deg);
   }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-  .popup__form .input {
-    background-color: var(--dark-card-bg);
-    -webkit-filter: brightness(120%);
-    filter: brightness(120%);
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
   }
-} */
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 @media (max-width: 1024px) {
   html {
