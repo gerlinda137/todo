@@ -40,7 +40,11 @@
             <i class="fa-solid fa-sun"></i>
             <i class="fa-solid fa-moon"></i>
           </button>
-          <h2 class="user-manu__username">User</h2>
+          <div class="user-menu__username-container">
+            <i class="fa-solid fa-user"></i>
+            <h2 class="user-manu__username">User</h2>
+          </div>
+
           <button class="user-menu__logout" id="logoutbtn" type="button">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
@@ -151,13 +155,13 @@
         </form>
       </div>
     </div>
-    <div class="auth">
-      <div class="loader hidden">
-        <div class="circle-outter">
-          <div class="circle-inner"></div>
-          <div class="circle-inner-two"></div>
-        </div>
+    <div class="loader">
+      <div class="circle-outter">
+        <div class="circle-inner"></div>
+        <div class="circle-inner-two"></div>
       </div>
+    </div>
+    <div class="auth hidden">
       <div class="auth__inner">
         <h2 class="auth__title">Log In</h2>
         <form class="auth__form" id="authForm">

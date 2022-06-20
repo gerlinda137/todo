@@ -11,7 +11,7 @@ const signUpInputsContainer = document.querySelector(".signup__inputs");
 const signUpInputs = signUpInputsContainer.querySelectorAll(".input");
 const authInputsContainer = document.querySelector(".auth__inputs");
 const authInputs = authInputsContainer.querySelectorAll(".input");
-const loader = authWindow.querySelector(".loader");
+const loader = document.querySelector(".loader");
 
 let currentLoginCallback = null;
 let currentSignUpCallback = null;
@@ -35,6 +35,10 @@ export function showProgressLoader() {
 
 export function hideProgressLoader() {
   loader.classList.add("hidden");
+}
+
+export function showAuthWindow() {
+  authWindow.classList.remove("hidden");
 }
 
 export function hide() {

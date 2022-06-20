@@ -7,6 +7,8 @@ const newTaskPopup = document.querySelector(".add-task-popup");
 const errorPopup = document.querySelector(".error-message");
 const errorPopupTxt = errorPopup.querySelector(".error-message__txt");
 
+const userNameField = document.querySelector(".user-manu__username");
+
 export function showError(errorMessage) {
   errorPopup.classList.remove("hidden");
   errorPopupTxt.textContent = errorMessage;
@@ -14,6 +16,10 @@ export function showError(errorMessage) {
 
 export function hideError() {
   errorPopup.classList.add("hidden");
+}
+
+export function setUserNameInHeader(name) {
+  userNameField.textContent = name;
 }
 
 Model.addEventListenerOnModelChanged(displayModel);
