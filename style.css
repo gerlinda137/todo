@@ -224,7 +224,7 @@ body {
   position: relative;
   border-radius: 10px;
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-  padding: 1.5em 1em;
+  padding: 1.5em 1em 0.5em 1em;
   transition: all 0.5s;
   cursor: pointer;
   background-color: var(--card-bg);
@@ -283,7 +283,48 @@ body {
   margin-bottom: 0.5em;
 }
 .task__description {
+  margin-bottom: 0.5em;
 }
+
+.time-tracker {
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+  transition: 0.5s;
+}
+
+.time-tracker:hover,
+.time-tracker:active {
+  opacity: 1;
+}
+
+.time-tracker__btn-wrapper {
+}
+.time-tracker__btn {
+  color: var(--txt);
+  transition: 0.5s;
+  padding: 0;
+  margin-right: 0.5em;
+}
+
+.time-tracker__btn:hover {
+  color: tomato;
+}
+
+.time-tracker__btn.hidden {
+  display: none;
+}
+
+.time-tracker__time {
+  display: flex;
+  align-items: center;
+}
+
+.time-tracker__time-result {
+  font-size: 0.7rem;
+  margin-left: 0.3em;
+}
+
 .on-hold .task {
   background-color: tomato;
 }

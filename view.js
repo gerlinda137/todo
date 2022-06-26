@@ -90,6 +90,14 @@ function displayModel() {
         const deleteTaskBtn =
           taskTemplateClone.querySelector("#delete-task-btn");
         const editTaskBtn = taskTemplateClone.querySelector("#edit-task-btn");
+        const timePlay = taskTemplateClone.querySelector("#time-tracker-play");
+        const timePause = taskTemplateClone.querySelector(
+          "#time-tracker-pause"
+        );
+        const timeResult = taskTemplateClone.querySelector(
+          ".time-tracker__time-result"
+        );
+
         clonedTaskTitle.textContent = task.title;
         clonedTaskDescription.textContent = task.description;
         taskTemplateClone.dataset.taskId = task.id;
@@ -105,6 +113,44 @@ function displayModel() {
         deleteTaskBtn.addEventListener("click", () => {
           Model.deleteTaskFromModel(column.id, task.id);
         });
+
+        timePlay.addEventListener("click", () => {
+          timePause.classList.remove("hidden");
+          timePlay.classList.add("hidden");
+          timer(timeResult);
+        });
+
+        timePause.addEventListener("click", () => {
+          timePause.classList.add("hidden");
+          timePlay.classList.remove("hidden");
+        });
+
+        function timer(timeInput) {
+          const startingDate = new Date();
+          const startingTime = startingDate.getTime();
+          const startingTimeZoneOffset = startingDate.getTimezoneOffset();
+          const startingTimeZoneOffsetInHours = startingTimeZoneOffset / 60;
+
+          function printDate(ms) {
+            let seconds = ms.getSeconds();
+            let minutes = ms.getMinutes();
+            let hours = ms.getHours() + startingTimeZoneOffsetInHours;
+
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            // return hours + ":" + minutes + ":" + seconds;
+            timeInput.textContent = hours + ":" + minutes + ":" + seconds;
+          }
+
+          setInterval(() => {
+            const currentDate = new Date();
+            const currentTime = currentDate.getTime();
+            const timeDiff = new Date(currentTime - startingTime);
+            printDate(timeDiff);
+          }, 1000);
+        }
 
         tasks.push(taskTemplateClone);
       }
