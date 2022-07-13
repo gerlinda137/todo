@@ -131,6 +131,9 @@ function displayModel() {
           const startingTimeZoneOffset = startingDate.getTimezoneOffset();
           const startingTimeZoneOffsetInHours = startingTimeZoneOffset / 60;
 
+          Model.startTrackTimeInTask(task.id, startingTime);
+          // Это приводит к полному пересозданию доски (обработать ситуацию, когда создается вьюха для карточки, когда уже идет время)
+
           function printDate(ms) {
             let seconds = ms.getSeconds();
             let minutes = ms.getMinutes();

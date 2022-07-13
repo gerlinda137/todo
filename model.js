@@ -11,6 +11,8 @@ export function generateInitialModel() {
             id: 0,
             title: "Add your tasks to the board",
             description: "and write some description",
+            // currentTrackingStartTimestamp: 0 - время не начиналось
+            // totalTrackedTime: в это поле суммируется время которое натикало когда пользователь нажал на паузу
           },
         ],
       },
@@ -138,6 +140,23 @@ export function editTaskInModel(taskId, newTitle, newDescription) {
         card.title = newTitle;
         card.description = newDescription;
         fireAllModelListeners();
+      }
+    }
+  }
+}
+
+export function startTrackTimeInTask(taskId, startTimestamp) {
+  const columns = model.columns;
+  for (const column of columns) {
+    if (column.cards == undefined) {
+      column.cards = [];
+    }
+    const cards = column.cards;
+    for (const card of cards) {
+      if (card.id == taskId) {
+        card.startTimestamp = startTimestamp;
+        fireAllModelListeners();
+        return;
       }
     }
   }
