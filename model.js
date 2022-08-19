@@ -162,6 +162,29 @@ export function startTrackTimeInTask(taskId, startTimestamp) {
   }
 }
 
+export function stopTrackTimeInTask(taskId, stoppedTimestamp, startTimestamp) {
+  const columns = model.columns;
+  for (const column of columns) {
+    if (column.cards == undefined) {
+      column.cards = [];
+    }
+    const cards = column.cards;
+    for (const card of cards) {
+      if (card.id == taskId) {
+        if (card.trackedTime == undefined) {
+          card.trackedTime = stoppedTimestamp - startTimestamp;
+        } else {
+          card.trackedTime += stoppedTimestamp - startTimestamp;
+        }
+
+        card.startTimestamp = 0;
+        fireAllModelListeners();
+        return;
+      }
+    }
+  }
+}
+
 export function changeCardColumn(taskId, newColumnId) {
   //найти карточку в модели, записать объект карточки в переменную, удалить карточку из старой колонки и добавить в новую
 

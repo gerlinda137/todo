@@ -129,17 +129,75 @@ function displayModel() {
         timePause.addEventListener("click", () => {
           timePause.classList.add("hidden");
           timePlay.classList.remove("hidden");
+
+          const stoppedTime = new Date().getTime();
+          Model.stopTrackTimeInTask(
+            taskModel.id,
+            stoppedTime,
+            taskModel.startTimestamp
+          );
         });
 
-        if (taskModel.startTimestamp) {
-          setInterval(() => {
+        if (taskModel.startTimestamp && !taskModel.trackedTime) {
+          timePause.classList.remove("hidden");
+          timePlay.classList.add("hidden");
+
+          const myTimer = setInterval(() => {
             const currentTime = new Date().getTime();
             const timeDiffMs = currentTime - taskModel.startTimestamp;
 
-            const timeDiffAsDate = new Date(timeDiffMs);
-            const seconds = timeDiffAsDate.getUTCSeconds();
-            const minutes = timeDiffAsDate.getUTCMinutes();
-            const hours = timeDiffAsDate.getUTCHours();
+            let seconds = Math.floor(timeDiffMs / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+
+            seconds = seconds % 60;
+            minutes = minutes % 60;
+
+            const hoursStr = hours < 10 ? "0" + hours : hours;
+            const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+            const secondsStr = seconds < 10 ? "0" + seconds : seconds;
+
+            timeResultTxtField.textContent =
+              hoursStr + ":" + minutesStr + ":" + secondsStr;
+          }, 1000);
+        }
+
+        if (taskModel.startTimestamp == 0 && taskModel.trackedTime) {
+          //выводим время
+          const timeDiffMs = taskModel.trackedTime;
+
+          let seconds = Math.floor(timeDiffMs / 1000);
+          let minutes = Math.floor(seconds / 60);
+          let hours = Math.floor(minutes / 60);
+
+          seconds = seconds % 60;
+          minutes = minutes % 60;
+
+          const hoursStr = hours < 10 ? "0" + hours : hours;
+          const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+          const secondsStr = seconds < 10 ? "0" + seconds : seconds;
+
+          timeResultTxtField.textContent =
+            hoursStr + ":" + minutesStr + ":" + secondsStr;
+        }
+
+        if (taskModel.startTimestamp !== 0 && taskModel.trackedTime) {
+          //выводим время
+          timePause.classList.remove("hidden");
+          timePlay.classList.add("hidden");
+
+          const myTimerAfterPaused = setInterval(() => {
+            const timeDiffMs =
+              new Date().getTime() -
+              taskModel.startTimestamp +
+              taskModel.trackedTime;
+
+            let seconds = Math.floor(timeDiffMs / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+
+            seconds = seconds % 60;
+            minutes = minutes % 60;
 
             const hoursStr = hours < 10 ? "0" + hours : hours;
             const minutesStr = minutes < 10 ? "0" + minutes : minutes;
