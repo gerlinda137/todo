@@ -282,3 +282,36 @@ function getEditedTaskData() {
     description: editDescriptionInput.value,
   };
 }
+
+//change project name
+const kanbanTitleContainer = document.querySelector(".board__title-wrapper");
+const editTitleBtn = kanbanTitleContainer.querySelector("#edit-board-title");
+const titleInputWrapper = kanbanTitleContainer.querySelector(
+  ".board__title-input-wrapper"
+);
+const titleInput = titleInputWrapper.querySelector("#board-title-input");
+const kanbanTitle = kanbanTitleContainer.querySelector(".board__title-inner");
+const saveKanbanTitleBtn =
+  kanbanTitleContainer.querySelector("#save-board-title");
+const titleErrorMessage = kanbanTitleContainer.querySelector(
+  ".board__title-error-message "
+);
+
+editTitleBtn.addEventListener("click", () => {
+  titleInputWrapper.classList.remove("hidden");
+  kanbanTitle.classList.add("hidden");
+});
+
+saveKanbanTitleBtn.addEventListener("click", () => {
+  const inputValue = titleInput.value;
+  titleErrorMessage.classList.add("hidden");
+  titleInput.classList.remove("errored");
+  console.log(inputValue);
+  if (inputValue.length >= 1) {
+    titleInputWrapper.classList.add("hidden");
+    kanbanTitle.classList.remove("hidden");
+  } else {
+    titleInput.classList.add("errored");
+    titleErrorMessage.classList.remove("hidden");
+  }
+});

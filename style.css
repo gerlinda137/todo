@@ -162,11 +162,62 @@ body {
   padding: 0 20px;
   height: 100%;
 }
+
+.board__title-wrapper {
+  position: relative;
+  margin-bottom: 2em;
+}
+.board__title-inner {
+  position: relative;
+}
+
+.board__title-inner.hidden {
+  display: none;
+}
+
+.board__title-inner:hover .task__btn {
+  opacity: 1;
+}
+
+.board__title-inner .task__btn {
+  position: absolute;
+  right: -2em;
+  top: 0;
+  opacity: 0;
+  transition: 0.5s;
+}
+
 .board__title {
   font-size: 2rem;
-  margin-bottom: 2em;
   text-align: center;
   max-width: 70vw;
+}
+
+.board__title-input-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.board__title-error-message {
+  position: absolute;
+  bottom: -1.5em;
+  color: tomato;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  left: 0;
+}
+
+.board__title-error-message.hidden {
+  display: none;
+}
+
+.board__title-input-wrapper.hidden {
+  display: none;
+}
+
+.board__title-input.input {
+  margin-bottom: 0;
 }
 
 .kanban {
@@ -268,15 +319,9 @@ body {
   color: tomato;
 }
 
-.task__btn--edit {
-}
-.fa-solid {
-}
-.fa-pen {
-}
-.task__btn--delete {
-}
-.fa-trash-can {
+.task__btn.task__btn--check {
+  font-size: 1rem;
+  margin-left: 0.7em;
 }
 
 .task__title {

@@ -55,7 +55,36 @@
     </header>
     <main class="main">
       <section class="board">
-        <h2 class="board__title">Project name</h2>
+        <div class="board__title-wrapper">
+          <div class="board__title-inner">
+            <h2 class="board__title">Project name</h2>
+            <button
+              id="edit-board-title"
+              class="task__btn task__btn--edit"
+              type="button"
+            >
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          </div>
+          <div class="board__title-input-wrapper hidden">
+            <input
+              id="board-title-input"
+              type="text"
+              class="board__title-input input"
+              placeholder="Change project's name"
+            />
+            <button
+              id="save-board-title"
+              class="task__btn task__btn--edit task__btn--check"
+              type="button"
+            >
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <p class="board__title-error-message hidden">
+              Title should consists of one symbol at least
+            </p>
+          </div>
+        </div>
         <section class="kanban">
           <div class="kanban__inner"></div>
         </section>

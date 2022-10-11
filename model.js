@@ -176,7 +176,6 @@ export function stopTrackTimeInTask(taskId, stoppedTimestamp, startTimestamp) {
         } else {
           card.trackedTime += stoppedTimestamp - startTimestamp;
         }
-
         card.startTimestamp = 0;
         fireAllModelListeners();
         return;
