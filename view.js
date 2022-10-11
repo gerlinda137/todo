@@ -81,7 +81,7 @@ function displayModel() {
     let tasks = [];
 
     if (column.cards !== undefined) {
-      for (const task of column.cards) {
+      for (const taskModel of column.cards) {
         const taskTemplateClone =
           taskTemplate.content.firstElementChild.cloneNode(true);
         const clonedTaskTitle = taskTemplateClone.querySelector(".task__title");
@@ -90,21 +90,123 @@ function displayModel() {
         const deleteTaskBtn =
           taskTemplateClone.querySelector("#delete-task-btn");
         const editTaskBtn = taskTemplateClone.querySelector("#edit-task-btn");
-        clonedTaskTitle.textContent = task.title;
-        clonedTaskDescription.textContent = task.description;
-        taskTemplateClone.dataset.taskId = task.id;
+        const timePlay = taskTemplateClone.querySelector("#time-tracker-play");
+        const timePause = taskTemplateClone.querySelector(
+          "#time-tracker-pause"
+        );
+        const timeResultTxtField = taskTemplateClone.querySelector(
+          ".time-tracker__time-result"
+        );
+
+        clonedTaskTitle.textContent = taskModel.title;
+        clonedTaskDescription.textContent = taskModel.description;
+        taskTemplateClone.dataset.taskId = taskModel.id;
 
         //dnd for cards
         taskTemplateClone.addEventListener("dragstart", startDrag);
         taskTemplateClone.addEventListener("dragend", endDrag);
 
         editTaskBtn.addEventListener("click", () => {
-          openEditTaskPopup(task.id, task.title, task.description);
+          openEditTaskPopup(
+            taskModel.id,
+            taskModel.title,
+            taskModel.description
+          );
         });
 
         deleteTaskBtn.addEventListener("click", () => {
-          Model.deleteTaskFromModel(column.id, task.id);
+          Model.deleteTaskFromModel(column.id, taskModel.id);
         });
+
+        timePlay.addEventListener("click", () => {
+          timePause.classList.remove("hidden");
+          timePlay.classList.add("hidden");
+
+          const startingTime = new Date().getTime();
+          Model.startTrackTimeInTask(taskModel.id, startingTime);
+        });
+
+        timePause.addEventListener("click", () => {
+          timePause.classList.add("hidden");
+          timePlay.classList.remove("hidden");
+
+          const stoppedTime = new Date().getTime();
+          Model.stopTrackTimeInTask(
+            taskModel.id,
+            stoppedTime,
+            taskModel.startTimestamp
+          );
+        });
+
+        if (taskModel.startTimestamp && !taskModel.trackedTime) {
+          timePause.classList.remove("hidden");
+          timePlay.classList.add("hidden");
+
+          const myTimer = setInterval(() => {
+            const currentTime = new Date().getTime();
+            const timeDiffMs = currentTime - taskModel.startTimestamp;
+
+            let seconds = Math.floor(timeDiffMs / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+
+            seconds = seconds % 60;
+            minutes = minutes % 60;
+
+            const hoursStr = hours < 10 ? "0" + hours : hours;
+            const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+            const secondsStr = seconds < 10 ? "0" + seconds : seconds;
+
+            timeResultTxtField.textContent =
+              hoursStr + ":" + minutesStr + ":" + secondsStr;
+          }, 1000);
+        }
+
+        if (taskModel.startTimestamp == 0 && taskModel.trackedTime) {
+          //выводим время
+          const timeDiffMs = taskModel.trackedTime;
+
+          let seconds = Math.floor(timeDiffMs / 1000);
+          let minutes = Math.floor(seconds / 60);
+          let hours = Math.floor(minutes / 60);
+
+          seconds = seconds % 60;
+          minutes = minutes % 60;
+
+          const hoursStr = hours < 10 ? "0" + hours : hours;
+          const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+          const secondsStr = seconds < 10 ? "0" + seconds : seconds;
+
+          timeResultTxtField.textContent =
+            hoursStr + ":" + minutesStr + ":" + secondsStr;
+        }
+
+        if (taskModel.startTimestamp !== 0 && taskModel.trackedTime) {
+          //выводим время
+          timePause.classList.remove("hidden");
+          timePlay.classList.add("hidden");
+
+          const myTimerAfterPaused = setInterval(() => {
+            const timeDiffMs =
+              new Date().getTime() -
+              taskModel.startTimestamp +
+              taskModel.trackedTime;
+
+            let seconds = Math.floor(timeDiffMs / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+
+            seconds = seconds % 60;
+            minutes = minutes % 60;
+
+            const hoursStr = hours < 10 ? "0" + hours : hours;
+            const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+            const secondsStr = seconds < 10 ? "0" + seconds : seconds;
+
+            timeResultTxtField.textContent =
+              hoursStr + ":" + minutesStr + ":" + secondsStr;
+          }, 1000);
+        }
 
         tasks.push(taskTemplateClone);
       }
@@ -180,3 +282,36 @@ function getEditedTaskData() {
     description: editDescriptionInput.value,
   };
 }
+
+//change project name
+const kanbanTitleContainer = document.querySelector(".board__title-wrapper");
+const editTitleBtn = kanbanTitleContainer.querySelector("#edit-board-title");
+const titleInputWrapper = kanbanTitleContainer.querySelector(
+  ".board__title-input-wrapper"
+);
+const titleInput = titleInputWrapper.querySelector("#board-title-input");
+const kanbanTitle = kanbanTitleContainer.querySelector(".board__title-inner");
+const saveKanbanTitleBtn =
+  kanbanTitleContainer.querySelector("#save-board-title");
+const titleErrorMessage = kanbanTitleContainer.querySelector(
+  ".board__title-error-message "
+);
+
+editTitleBtn.addEventListener("click", () => {
+  titleInputWrapper.classList.remove("hidden");
+  kanbanTitle.classList.add("hidden");
+});
+
+saveKanbanTitleBtn.addEventListener("click", () => {
+  const inputValue = titleInput.value;
+  titleErrorMessage.classList.add("hidden");
+  titleInput.classList.remove("errored");
+  console.log(inputValue);
+  if (inputValue.length >= 1) {
+    titleInputWrapper.classList.add("hidden");
+    kanbanTitle.classList.remove("hidden");
+  } else {
+    titleInput.classList.add("errored");
+    titleErrorMessage.classList.remove("hidden");
+  }
+});
